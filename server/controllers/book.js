@@ -3,7 +3,7 @@ const ErrorResponse = require('../utils/errorResponse');
 
 const getBooks = async (req, res, next) => {
   try {
-    const books = await Book.find({});
+    const books = await Book.find({}).populate('createdBy', 'name email');
     res.json(books);
   } catch (err) {
     next(new ErrorResponse(err.message));
@@ -12,7 +12,7 @@ const getBooks = async (req, res, next) => {
 
 const createBook = async (req, res, next) => {
   try {
-    const newBook = await Book.create(req.body);
+    const newBook = await Book.create({ ...req.body, createdBy: req.user._id });
     res.json(newBook);
   } catch (err) {
     next(new ErrorResponse(err.message));
@@ -24,7 +24,7 @@ const getBookById = async (req, res, next) => {
     params: { id: _id },
   } = req;
   try {
-    const book = Book.findOne({ _id });
+    const book = await Book.findOne({ _id });
     res.json(book);
   } catch (err) {
     next(new ErrorResponse(err.message));
@@ -33,7 +33,7 @@ const getBookById = async (req, res, next) => {
 
 const deleteBook = async (req, res, next) => {
   try {
-    const deletedBook = Book.findByIdAndDelete(req.params.id);
+    const deletedBook = await Book.findByIdAndDelete(req.params.id);
     res.json(deletedBook);
   } catch (err) {
     next(new ErrorResponse(err.message));
@@ -47,7 +47,7 @@ const updateBook = async (req, res, next) => {
   } = req;
 
   try {
-    const updatedBook = Book.findByIdAndUpdate(id, body, { new: true, runValidators: true });
+    const updatedBook = await Book.findByIdAndUpdate(id, body, { new: true, runValidators: true });
     res.json(updatedBook);
   } catch (err) {
     next(new ErrorResponse(err.message));

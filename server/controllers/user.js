@@ -19,15 +19,9 @@ const register = async (req, res, next) => {
     );
     res
       .status(201)
-      .cookie(
-        'userToken',
-        userToken,
-
-        {
-          expires: new Date(Date.now() + 9000000),
-          httpOnly: true,
-        },
-      )
+      .cookie('userToken', userToken, {
+        expires: new Date(Date.now() + 9000000),
+      })
       .json({
         successMessage: 'user created!',
         user: newUser,
@@ -57,28 +51,23 @@ const login = async (req, res, next) => {
       if (!isPasswordValid) {
         throw new ErrorResponse('Invalid email or password', 401);
       } else {
+        const userData = {
+          _id: userRecord._id,
+          email: userRecord.email,
+          name: userRecord.name,
+        };
         const userToken = jwt.sign(
-          {
-            _id: userRecord._id,
-            email: userRecord.email,
-            username: userRecord.username,
-          },
+          userData,
 
           SECRET,
         );
         res
-          .cookie(
-            'userToken',
-            userToken,
-
-            {
-              expires: new Date(Date.now() + 600000000000),
-              httpOnly: true,
-            },
-          )
+          .cookie('userToken', userToken, {
+            expires: new Date(Date.now() + 600000000000),
+          })
           .json({
             successMessage: 'logged in Successfully',
-            user: userRecord,
+            user: userData,
           });
       }
     } catch (err) {

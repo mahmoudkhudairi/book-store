@@ -1,7 +1,16 @@
 import './App.css';
-
+import Header from './components/Header';
+import Main from './components/Main';
+import Footer from './components/Footer';
+import ContextProvider from './context';
 function App() {
-  return <h1 className="text-3xl font-bold underline">Hello world!</h1>;
+  return (
+    <ContextProvider>
+      <Header />
+      <Main />
+      <Footer />
+    </ContextProvider>
+  );
 }
 
 export default App;
