@@ -4,6 +4,7 @@ const ProtectedRoute = () => {
   const {
     state: { user },
   } = useGetContext();
+
   return user && <>{user ? <Outlet /> : <Navigate to="/login" />}</>;
 };
 

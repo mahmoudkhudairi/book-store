@@ -15,7 +15,7 @@ const createBook = async (req, res, next) => {
     const newBook = await Book.create({ ...req.body, createdBy: req.user._id });
     res.json(newBook);
   } catch (err) {
-    next(new ErrorResponse(err.message));
+    next(new ErrorResponse(err.message, err.errors));
   }
 };
 

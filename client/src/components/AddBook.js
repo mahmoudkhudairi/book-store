@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { Context } from '../context';
 const AddBook = (props) => {
   const { dispatch } = useContext(Context);
-
+  const [authorInputList, setAuthorInputList] = useState(['']);
   const [book, setBook] = useState({
     title: '',
     authors: [],
@@ -39,6 +39,24 @@ const AddBook = (props) => {
   const changeHandler = (e) => {
     setBook({ ...book, [e.target.name]: e.target.value });
   };
+
+  const handleAuthorsInputChange = (e, index) => {
+    const { value } = e.target;
+    const list = [...authorInputList];
+    list[index] = value;
+    setAuthorInputList(list);
+    setBook({ ...book, authors: list });
+  };
+
+  const handleRemoveClick = (index) => {
+    const list = [...authorInputList];
+    list.splice(index, 1);
+    setAuthorInputList(list);
+  };
+
+  const handleAddClick = () => {
+    setAuthorInputList([...authorInputList, '']);
+  };
   return (
     <form
       onSubmit={submitHandler}
@@ -49,23 +67,71 @@ const AddBook = (props) => {
       }}
     >
       <label>Title</label>
-      <input value={book.title} name="title" onChange={changeHandler} type="text" />
+      <input
+        className="border-2 border-blue-500"
+        value={book.title}
+        name="title"
+        onChange={changeHandler}
+        type="text"
+      />
       {errors.title ? <span className="text-danger">{errors.title.message}</span> : null}
       <label>Authors</label>
-      <input value={book.authors} name="authors" onChange={changeHandler} type="text" />
+      {authorInputList.map((author, i) => {
+        return (
+          <div>
+            <input
+              className="border-2 border-blue-500"
+              name="name"
+              value={author}
+              onChange={(e) => handleAuthorsInputChange(e, i)}
+            />
+
+            {authorInputList.length !== 1 && (
+              <button onClick={() => handleRemoveClick(i)}>Remove</button>
+            )}
+            {authorInputList.length - 1 === i && i < 9 && (
+              <button onClick={handleAddClick}>Add</button>
+            )}
+          </div>
+        );
+      })}
       {errors.authors ? <span>{errors.authors.message}</span> : null}
 
       <label>publisher</label>
-      <input value={book.publisher} name="publisher" onChange={changeHandler} type="text" />
+      <input
+        className="border-2 border-blue-500"
+        value={book.publisher}
+        name="publisher"
+        onChange={changeHandler}
+        type="text"
+      />
       {errors.publisher ? <span>{errors.publisher.message}</span> : null}
       <label>publishedDate</label>
-      <input value={book.publishedDate} name="publishedDate" onChange={changeHandler} type="text" />
+      <input
+        className="border-2 border-blue-500"
+        value={book.publishedDate}
+        name="publishedDate"
+        onChange={changeHandler}
+        type="date"
+      />
       {errors.publishedDate ? <span>{errors.publishedDate.message}</span> : null}
       <label>description</label>
-      <input value={book.description} name="description" onChange={changeHandler} type="text" />
+      <input
+        className="border-2 border-blue-500"
+        value={book.description}
+        name="description"
+        onChange={changeHandler}
+        type="text"
+      />
       {errors.description ? <span>{errors.description.message}</span> : null}
       <label>imageUrl</label>
-      <input value={book.imageUrl} name="imageUrl" onChange={changeHandler} type="text" />
+      <input
+        className="border-2 border-blue-500"
+        value={book.imageUrl}
+        name="imageUrl"
+        onChange={changeHandler}
+        type="text"
+      />
       {errors.imageUrl ? <span>{errors.imageUrl.message}</span> : null}
       <button>Add Book</button>
     </form>
