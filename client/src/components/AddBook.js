@@ -37,7 +37,17 @@ const AddBook = (props) => {
   };
 
   const changeHandler = (e) => {
-    setBook({ ...book, [e.target.name]: e.target.value });
+    if (e.target.name === 'image') {
+      const file = e.target.files[0];
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => {
+        const imageData = reader.result;
+        setBook({ ...book, imageUrl: imageData });
+      };
+    } else {
+      setBook({ ...book, [e.target.name]: e.target.value });
+    }
   };
 
   const handleAuthorsInputChange = (e, index) => {
@@ -57,6 +67,7 @@ const AddBook = (props) => {
   const handleAddClick = () => {
     setAuthorInputList([...authorInputList, '']);
   };
+
   return (
     <form
       onSubmit={submitHandler}
@@ -124,14 +135,8 @@ const AddBook = (props) => {
         type="text"
       />
       {errors.description ? <span>{errors.description.message}</span> : null}
-      <label>imageUrl</label>
-      <input
-        className="border-2 border-blue-500"
-        value={book.imageUrl}
-        name="imageUrl"
-        onChange={changeHandler}
-        type="text"
-      />
+      <label>image</label>
+      <input type="file" name="image" onChange={changeHandler} accept="image/*" isRequired={true} />
       {errors.imageUrl ? <span>{errors.imageUrl.message}</span> : null}
       <button>Add Book</button>
     </form>

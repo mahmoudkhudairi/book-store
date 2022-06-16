@@ -1,6 +1,7 @@
 const express = require('express');
 const authenticate = require('../middlewares/auth');
 const router = express.Router();
+const cloudinary = require('../middlewares/cloudinary');
 const {
   getBooks,
   getBookById,
@@ -9,7 +10,7 @@ const {
   deleteBook,
 } = require('../controllers/book');
 router.use(authenticate);
-router.route('/').get(getBooks).post(createBook);
+router.route('/').get(getBooks).post(cloudinary, createBook);
 router.route('/:id').get(getBookById).put(updateBook).delete(deleteBook);
 
 module.exports = router;
