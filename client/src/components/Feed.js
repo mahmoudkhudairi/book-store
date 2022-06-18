@@ -1,8 +1,9 @@
 import React, { useEffect, useContext } from 'react';
-import Book from './Book';
 import axios from 'axios';
+import Book from './Book';
+import { Link } from 'react-router-dom';
 import { Context } from '../context';
-const Home = (props) => {
+const Feed = (props) => {
   const { state, dispatch } = useContext(Context);
 
   useEffect(() => {
@@ -31,4 +32,4 @@ const Home = (props) => {
   );
 };
 
-export default Home;
+export default Feed;

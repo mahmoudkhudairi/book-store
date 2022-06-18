@@ -3,6 +3,7 @@ import { Routes, Route } from 'react-router-dom';
 import Register from './Register';
 import Login from './Login';
 import Home from './Home';
+import Feed from './Feed';
 import Profile from './Profile';
 import AddBook from './AddBook';
 import BookDetails from './BookDetails';
@@ -14,6 +15,7 @@ function Main() {
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
       <Route element={<Home />} path="/" />
+      <Route element={<Feed />} path="/feed" />
       <Route element={<Profile />} path="/profile/:username" />
       <Route element={<AddBook />} path="/new" />
       <Route element={<ProtectedRoute />} path="/book">

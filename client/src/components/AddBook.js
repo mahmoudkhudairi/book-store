@@ -89,7 +89,7 @@ const AddBook = (props) => {
       <label>Authors</label>
       {authorInputList.map((author, i) => {
         return (
-          <div>
+          <div key={i}>
             <input
               className="border-2 border-blue-500"
               name="name"
