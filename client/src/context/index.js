@@ -22,7 +22,7 @@ function reducer(state = initialState, action) {
   }
 }
 
-function ContextProvider(props) {
+function ContextProvider({ children }) {
   const [state, dispatch] = useReducer(reducer, initialState);
   useEffect(() => {
     const userToken = cookie.load('userToken');
@@ -31,11 +31,11 @@ function ContextProvider(props) {
     console.log('TOKEN', userToken);
   }, []);
 
-  return <Context.Provider value={{ state, dispatch }}>{props.children}</Context.Provider>;
+  return <Context.Provider value={{ state, dispatch }}>{children}</Context.Provider>;
 }
 
 export default ContextProvider;
 
-export const useGetContext = () => {
+export const useBooksContext = () => {
   return useContext(Context);
 };

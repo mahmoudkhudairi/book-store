@@ -1,11 +1,16 @@
-import { useGetContext } from '../context';
+import { useEffect, useState } from 'react';
+import { useBooksContext } from '../context';
 import { Navigate, Outlet } from 'react-router-dom';
 const ProtectedRoute = () => {
+  const [isAuthorized, setIsAuthorized] = useState(true);
   const {
     state: { user },
-  } = useGetContext();
+  } = useBooksContext();
+  useEffect(() => {
+    setIsAuthorized(false);
+  }, [user]);
 
-  return user && <>{user ? <Outlet /> : <Navigate to="/login" />}</>;
+  return <>{isAuthorized ? <></> : <>{user ? <Outlet /> : <Navigate to="/login" />}</>}</>;
 };
 
 export default ProtectedRoute;

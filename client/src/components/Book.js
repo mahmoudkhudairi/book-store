@@ -1,10 +1,10 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
-import { useGetContext } from '../context';
+import { useBooksContext } from '../context';
 const Book = (props) => {
   const { _id, title, imageUrl, createdBy } = props.book;
-  const { state, dispatch } = useGetContext();
+  const { state, dispatch } = useBooksContext();
   const deleteBook = (bookId) => {
     axios
       .delete(`/api/books/${bookId}`)
