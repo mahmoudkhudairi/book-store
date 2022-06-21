@@ -1,15 +1,14 @@
-import React, { useEffect, useContext } from 'react';
+import React, { useEffect, useState } from 'react';
 import Book from './Book';
 import axios from 'axios';
-import { Context } from '../context';
 const Home = (props) => {
-  const { state, dispatch } = useContext(Context);
+  const [books, setBooks] = useState([]);
 
   useEffect(() => {
     axios
-      .get('/api/books')
+      .get('/api/books/public')
       .then((res) => {
-        dispatch({ type: 'GET_BOOKS', payload: res.data });
+        setBooks(res.data);
       })
       .catch((err) => console.log(err));
   }, []);
@@ -24,8 +23,8 @@ const Home = (props) => {
         marginTop: '40px',
       }}
     >
-      {state.books.map((book) => (
-        <Book book={book} />
+      {books.map((book) => (
+        <Book book={book} key={book._id} />
       ))}
     </div>
   );
