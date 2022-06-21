@@ -1,16 +1,23 @@
 import { useEffect, useState } from 'react';
 import { useBooksContext } from '../context';
-import { Navigate, Outlet } from 'react-router-dom';
+import { Navigate, Outlet, useLocation } from 'react-router-dom';
 const ProtectedRoute = () => {
-  const [isAuthorized, setIsAuthorized] = useState(true);
+  let location = useLocation();
+  const [isAuthorized, setIsAuthorized] = useState(false);
   const {
     state: { user },
   } = useBooksContext();
   useEffect(() => {
-    setIsAuthorized(false);
+    setIsAuthorized(true);
   }, [user]);
 
-  return <>{isAuthorized ? <></> : <>{user ? <Outlet /> : <Navigate to="/login" />}</>}</>;
+  return (
+    <>
+      {isAuthorized && (
+        <>{user ? <Outlet /> : <Navigate to="/login" state={{ destination: location }} />}</>
+      )}
+    </>
+  );
 };
 
 export default ProtectedRoute;

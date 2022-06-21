@@ -59,7 +59,7 @@ function Header() {
                       ? ' px-3 py-2 flex items-center text-sm uppercase font-bold leading-snug text-purple-600 hover:opacity-75'
                       : ' px-3 py-2 flex items-center text-xs uppercase font-bold leading-snug text-white hover:opacity-75'
                   }
-                  to={'/feed'}
+                  to={'/books/'}
                 >
                   Browse Books
                 </NavLink>
@@ -71,7 +71,7 @@ function Header() {
                       ? ' px-3 py-2 flex items-center text-xs uppercase font-extrabold leading-snug text-purple-600 hover:opacity-75'
                       : ' px-3 py-2 flex items-center text-xs uppercase font-bold leading-snug text-white hover:opacity-75'
                   }
-                  to={'/new'}
+                  to={'/books/new'}
                 >
                   Add a New Book
                 </NavLink>

@@ -25,13 +25,17 @@ const Book = (props) => {
         padding: '20px',
       }}
     >
-      <Link to={`/profile/${createdBy.name}`}>Add By: {createdBy.name}</Link>
+      {createdBy ? (
+        <Link to={`/profile/${createdBy.name}`}>Added By: {createdBy.name}</Link>
+      ) : (
+        <p>Added By Google API</p>
+      )}
       <h2>{title}</h2>
       <img src={imageUrl} alt={''} />
       <br />
-      <Link to={`/book/${_id}`}>Details</Link>
+      <Link to={`/books/${_id}`}>Details</Link>
       <span> | </span>
-      <Link to={`/book/edit/${_id}`}>Edit</Link>
+      <Link to={`/books/${_id}/edit`}>Edit</Link>
       <br />
       <button onClick={() => deleteBook(_id)}>Delete</button>
     </div>

@@ -1,13 +1,14 @@
 import React, { useState, useContext } from 'react';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { Context } from '../context';
 function Login() {
   const { state, dispatch } = useContext(Context);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
-
+  const { state: locationState } = useLocation();
+  const destination = locationState ? locationState.destination : '/';
   const login = (event) => {
     event.preventDefault();
     axios
@@ -24,7 +25,7 @@ function Login() {
       .then((res) => {
         console.log(res.data.user);
         dispatch({ type: 'SET_USER', payload: { user: res.data.user } });
-        navigate('/', { replace: true });
+        navigate(destination, { replace: true });
       })
       .catch((err) => {
         console.log(err.response.data);

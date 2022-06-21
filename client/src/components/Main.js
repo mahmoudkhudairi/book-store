@@ -9,19 +9,22 @@ import AddBook from './AddBook';
 import BookDetails from './BookDetails';
 import UpdateBook from './UpdateBook';
 import ProtectedRoute from './ProtectedRoute';
+import NotFound from './NotFound';
 function Main() {
   return (
     <Routes>
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
-      <Route element={<Home />} path="/" />
-      <Route element={<Feed />} path="/feed" />
-      <Route element={<Profile />} path="/profile/:username" />
-      <Route element={<AddBook />} path="/new" />
-      <Route element={<ProtectedRoute />} path="/book">
+      <Route path="/" element={<Home />} />
+      <Route path="/profile/:username" element={<Profile />} />
+      <Route path="/books" element={<ProtectedRoute />}>
+        <Route path="new" element={<AddBook />} />
+        <Route path="" element={<Feed />} />
         <Route path=":id" element={<BookDetails />} />
+        <Route path=":id/edit/" element={<UpdateBook />} />
       </Route>
-      <Route element={<UpdateBook />} path="/book/edit/:id" />
+
+      <Route path="*" element={<NotFound />} />
     </Routes>
   );
 }
