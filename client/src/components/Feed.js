@@ -26,7 +26,7 @@ const Feed = (props) => {
       }}
     >
       {state.books.map((book) => (
-        <Book book={book} />
+        <Book book={book} key={book._id} />
       ))}
     </div>
   );

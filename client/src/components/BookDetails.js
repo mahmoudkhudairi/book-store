@@ -11,10 +11,8 @@ function BookDetails() {
   useEffect(() => {
     const book = state.books.find((book) => book._id === id);
     if (state.books && book) {
-      console.log('YOOOOO', book);
       setBook(book);
     } else {
-      console.log('NOOO');
       axios
         .get(`/api/books/${id}`)
         .then((res) => {

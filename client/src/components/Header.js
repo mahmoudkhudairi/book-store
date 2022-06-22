@@ -7,9 +7,6 @@ import { Context } from '../context';
 function Header() {
   const { state, dispatch } = useContext(Context);
   const [navbarOpen, setNavbarOpen] = useState(false);
-  useEffect(() => {
-    console.log('STATE', state);
-  }, [state]);
   const handleLogout = () => {
     axios
       .post(
@@ -20,7 +17,6 @@ function Header() {
         },
       )
       .then((res) => {
-        console.log('logged out');
         dispatch({ type: 'LOGOUT' });
       })
       .catch((err) => {

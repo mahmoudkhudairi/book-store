@@ -25,13 +25,9 @@ const AddBook = (props) => {
       })
       .then((res) => {
         dispatch({ type: 'ADD_BOOK', payload: res.data });
-        navigate('/');
+        navigate('/books');
       })
       .catch((err) => {
-        console.log(err);
-        console.log('err.response:', err.response);
-        console.log('err.response.data:', err.response.data);
-        console.log('err.response.data.errors:', err.response.data.errors);
         setErrors(err.response.data.errors);
       });
   };
@@ -136,7 +132,7 @@ const AddBook = (props) => {
       />
       {errors.description ? <span>{errors.description.message}</span> : null}
       <label>image</label>
-      <input type="file" name="image" onChange={changeHandler} accept="image/*" isRequired={true} />
+      <input type="file" name="image" onChange={changeHandler} accept="image/*" required={true} />
       {errors.imageUrl ? <span>{errors.imageUrl.message}</span> : null}
       <button>Add Book</button>
     </form>

@@ -9,8 +9,6 @@ const Book = (props) => {
     axios
       .delete(`/api/books/${bookId}`)
       .then((res) => {
-        console.log(res);
-        console.log(res.data);
         dispatch({ type: 'DELETE_BOOK', payload: bookId });
       })
       .catch((err) => console.log(err));
@@ -34,10 +32,15 @@ const Book = (props) => {
       <img src={imageUrl} alt={''} />
       <br />
       <Link to={`/books/${_id}`}>Details</Link>
-      <span> | </span>
-      <Link to={`/books/${_id}/edit`}>Edit</Link>
-      <br />
-      <button onClick={() => deleteBook(_id)}>Delete</button>
+
+      {state.user._id === createdBy._id && (
+        <>
+          <span> | </span>
+          <Link to={`/books/${_id}/edit`}>Edit</Link>
+          <span> | </span>
+          <button onClick={() => deleteBook(_id)}>Delete</button>
+        </>
+      )}
     </div>
   );
 };

@@ -28,7 +28,6 @@ function ContextProvider({ children }) {
     const userToken = cookie.load('userToken');
     const user = userToken && jwtDecode(userToken);
     dispatch({ type: 'SET_USER', payload: { user, token: userToken } });
-    console.log('TOKEN', userToken);
   }, []);
 
   return <Context.Provider value={{ state, dispatch }}>{children}</Context.Provider>;

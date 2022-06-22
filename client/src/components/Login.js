@@ -1,15 +1,15 @@
-import React, { useState, useContext } from 'react';
+import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { Context } from '../context';
+import { useBooksContext } from '../context';
 function Login() {
-  const { state, dispatch } = useContext(Context);
+  const { state, dispatch } = useBooksContext();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
   const { state: locationState } = useLocation();
   const destination = locationState ? locationState.destination : '/';
-  const login = (event) => {
+  const handleSubmit = (event) => {
     event.preventDefault();
     axios
       .post(
@@ -23,7 +23,6 @@ function Login() {
         },
       )
       .then((res) => {
-        console.log(res.data.user);
         dispatch({ type: 'SET_USER', payload: { user: res.data.user } });
         navigate(destination, { replace: true });
       })
@@ -33,7 +32,7 @@ function Login() {
   };
 
   return (
-    <form className="container mx-auto px-10 max-w-md" onSubmit={login}>
+    <form className="container mx-auto px-10 max-w-md" onSubmit={handleSubmit}>
       <div className="mb-6">
         <label
           htmlFor="email"
@@ -73,7 +72,7 @@ function Login() {
         type="submit"
         className="text-white bg-teal-500 hover:bg-teal-500 focus:ring-4 focus:outline-none focus:ring-teal-300 font-medium rounded-full text-sm w-full  px-5 py-2.5 text-center "
       >
-        Submit
+        Login
       </button>
     </form>
   );
