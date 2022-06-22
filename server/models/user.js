@@ -43,19 +43,17 @@ UserSchema.virtual('confirmPassword')
 UserSchema.pre('validate', function (next) {
   if (this.password !== this.confirmPassword) {
     this.invalidate('confirmPassword', 'Passwords must match!!!');
-    console.log("Passwords don't match!");
   }
   next();
 });
 
 UserSchema.pre('save', async function (next) {
-  console.log('in pre save');
   try {
     const hashedPassword = await bcrypt.hash(this.password, 10);
     this.password = hashedPassword;
     next();
   } catch (error) {
-    console.log('IS THERE ANY ERROR', error);
+    console.log('Error in hashing password Pre save', error);
   }
 });
 

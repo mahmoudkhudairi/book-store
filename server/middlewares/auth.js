@@ -1,14 +1,12 @@
 const jwt = require('jsonwebtoken');
-
+const ErrorResponse = require('../utils/errorResponse');
 const authenticate = async (req, res, next) => {
-  console.log('YOOOOO');
   try {
     const user = await jwt.verify(req.cookies.userToken, process.env.JWT_SECRET);
-    console.log('user', user);
     req.user = user;
     next();
   } catch (error) {
-    next('Unauthenticated user');
+    next(new ErrorResponse('Unauthorized user', null, 401));
   }
 };
 module.exports = authenticate;

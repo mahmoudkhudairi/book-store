@@ -12,7 +12,7 @@ const register = async (req, res, next) => {
       {
         _id: newUser._id,
         email: newUser.email,
-        username: newUser.username,
+        name: newUser.name,
         profilePicture: newUser.profilePicture,
       },
       SECRET,
@@ -27,15 +27,6 @@ const register = async (req, res, next) => {
         user: newUser,
       });
   } catch (err) {
-    // let arr =
-    //   'User validation failed: name: Name must be at least 3 characters long, email: user with that email already in Database.'.split(
-    //     /,|:/,
-    //   );
-    // let obj = {};
-    // for (let i = 1; i < arr.length; i += 2) {
-    //   obj[arr[i]] = arr[i + 1];
-    // }
-    // console.log('obj', Object.keys(obj), Object.values(obj));
     console.log(err);
     next(new ErrorResponse(err.message));
   }
@@ -44,12 +35,12 @@ const register = async (req, res, next) => {
 const login = async (req, res, next) => {
   const userRecord = await User.findOne({ email: req.body.email });
   if (!userRecord) {
-    throw new ErrorResponse('Invalid email or password', 401);
+    next(new ErrorResponse('Invalid email or password', null, 401));
   } else {
     try {
       const isPasswordValid = await bcrypt.compare(req.body.password, userRecord.password);
       if (!isPasswordValid) {
-        throw new ErrorResponse('Invalid email or password', 401);
+        next(new ErrorResponse('Invalid email or password', null, 401));
       } else {
         const userData = {
           _id: userRecord._id,
@@ -71,7 +62,7 @@ const login = async (req, res, next) => {
           });
       }
     } catch (err) {
-      next(new ErrorResponse(err.message));
+      next(new ErrorResponse('Invalid email or password', null, 401));
     }
   }
 };

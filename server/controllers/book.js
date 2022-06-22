@@ -10,7 +10,6 @@ const getPublicBooks = async (req, res, next) => {
       } = await axios.get(
         `https://www.googleapis.com/books/v1/volumes?q=programming&maxResults=20&key=${process.env.GOOGLE_BOOKS_API_KEY}`,
       );
-      console.log(items[0]);
       const books = items.reduce((acc, item) => {
         const { volumeInfo, id } = item;
         const book = {
@@ -36,7 +35,7 @@ const getPublicBooks = async (req, res, next) => {
 };
 const getBooks = async (req, res, next) => {
   try {
-    const books = await Book.find({}).populate('createdBy', 'name email');
+    const books = await Book.find({}).populate('createdBy', '_id name email');
     res.json(books);
   } catch (err) {
     next(new ErrorResponse(err.message));
@@ -54,10 +53,10 @@ const createBook = async (req, res, next) => {
 
 const getBookById = async (req, res, next) => {
   const {
-    params: { id: _id },
+    params: { id },
   } = req;
   try {
-    const book = await Book.findOne({ _id });
+    const book = await Book.findById(id).populate('createdBy', '_id name email');
     res.json(book);
   } catch (err) {
     next(new ErrorResponse(err.message));
