@@ -28,6 +28,12 @@ const UserSchema = mongoose.Schema(
         ref: 'Book',
       },
     ],
+    favoriteBooks: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Book',
+      },
+    ],
   },
   { timestamps: true },
 );

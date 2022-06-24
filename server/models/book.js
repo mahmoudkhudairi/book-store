@@ -28,6 +28,10 @@ const BookSchema = mongoose.Schema(
       type: String,
       required: [true, 'Book Image is required'],
     },
+    favoriteCount: {
+      type: Number,
+      default: 0,
+    },
     createdBy: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'User',

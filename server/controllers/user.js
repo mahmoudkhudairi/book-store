@@ -82,10 +82,23 @@ const getUserBooks = async (req, res, next) => {
     next(new ErrorResponse(err.message));
   }
 };
+const getUserFavorites = async (req, res, next) => {
+  try {
+    const user = await User.findById(req.user._id).populate({
+      path: 'favoriteBooks',
+      populate: { path: 'createdBy', select: '_id name email' },
+    });
+    console.log('USER', user);
+    res.json(user.favoriteBooks);
+  } catch (err) {
+    next(new ErrorResponse(err.message));
+  }
+};
 
 module.exports = {
   register,
   login,
   logout,
   getUserBooks,
+  getUserFavorites,
 };
