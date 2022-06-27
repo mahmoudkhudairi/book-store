@@ -1,8 +1,8 @@
 const express = require('express');
-const authenticate = require('../middlewares/auth');
-const acl = require('../middlewares/acl');
+const authenticate = require('../middleware/auth');
+const acl = require('../middleware/acl');
 const router = express.Router();
-const cloudinary = require('../middlewares/cloudinary');
+const cloudinary = require('../middleware/cloudinary');
 const {
   getBooks,
   getPublicBooks,
