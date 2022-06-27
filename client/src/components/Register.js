@@ -98,7 +98,7 @@ function Register() {
           ConfirmPassword
         </label>
         <input
-          type="text"
+          type="password"
           name="confirmPassword"
           id="confirm-password"
           value={user.confirmPassword}

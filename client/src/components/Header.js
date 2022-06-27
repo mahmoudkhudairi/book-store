@@ -1,10 +1,11 @@
 import { useEffect, useContext, useState } from 'react';
-import { NavLink, Link } from 'react-router-dom';
+import { NavLink, Link, useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBars } from '@fortawesome/free-solid-svg-icons';
 import axios from 'axios';
 import { Context } from '../context';
 function Header() {
+  const navigate = useNavigate();
   const { state, dispatch } = useContext(Context);
   const [navbarOpen, setNavbarOpen] = useState(false);
   const handleLogout = () => {
@@ -18,6 +19,7 @@ function Header() {
       )
       .then((res) => {
         dispatch({ type: 'LOGOUT' });
+        navigate('/');
       })
       .catch((err) => {
         console.log(err);
@@ -55,9 +57,21 @@ function Header() {
                       ? ' px-3 py-2 flex items-center text-sm uppercase font-bold leading-snug text-purple-600 hover:opacity-75'
                       : ' px-3 py-2 flex items-center text-xs uppercase font-bold leading-snug text-white hover:opacity-75'
                   }
+                  to={'/'}
+                >
+                  Public Books
+                </NavLink>
+              </li>
+              <li className="nav-item">
+                <NavLink
+                  className={({ isActive }) =>
+                    isActive
+                      ? ' px-3 py-2 flex items-center text-sm uppercase font-bold leading-snug text-purple-600 hover:opacity-75'
+                      : ' px-3 py-2 flex items-center text-xs uppercase font-bold leading-snug text-white hover:opacity-75'
+                  }
                   to={'/books/'}
                 >
-                  Browse Books
+                  Users Books
                 </NavLink>
               </li>
               <li className="nav-item">

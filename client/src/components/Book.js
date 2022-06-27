@@ -1,17 +1,29 @@
-import React from 'react';
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import { useBooksContext } from '../context';
-const Book = (props) => {
-  const { _id, title, imageUrl, createdBy } = props.book;
+const Book = ({ book }) => {
+  const { _id, title, imageUrl, createdBy } = book;
   const { state, dispatch } = useBooksContext();
-  const deleteBook = (bookId) => {
+  const [addToFav, setAddToFav] = useState(false);
+  useEffect(() => {
+    // createdBy && setAddToFav(!!state.user.favDict[_id]);
+  }, [book]);
+
+  const deleteBook = () => {
     axios
-      .delete(`/api/books/${bookId}`)
+      .delete(`/api/books/${_id}`)
       .then((res) => {
-        dispatch({ type: 'DELETE_BOOK', payload: bookId });
+        dispatch({ type: 'DELETE_BOOK', payload: _id });
       })
       .catch((err) => console.log(err));
+  };
+  const handleFav = () => {
+    setAddToFav((previousState) => {
+      const newState = !previousState;
+      axios.put(`/api/users/favorite/${_id}`, { addToFav: newState });
+      return newState;
+    });
   };
   return (
     <div
@@ -24,7 +36,10 @@ const Book = (props) => {
       }}
     >
       {createdBy ? (
-        <Link to={`/profile/${createdBy.name}`}>Added By: {createdBy.name}</Link>
+        <>
+          <button onClick={handleFav}>{addToFav ? <>Remove From Fav</> : <>Add to Fav</>}</button>
+          <Link to={`/profile/${createdBy.name}`}>Added By: {createdBy.name}</Link>
+        </>
       ) : (
         <p>Added By Google API</p>
       )}
@@ -33,12 +48,12 @@ const Book = (props) => {
       <br />
       <Link to={`/books/${_id}`}>Details</Link>
 
-      {state.user._id === createdBy._id && (
+      {createdBy && state.user._id === createdBy._id && (
         <>
           <span> | </span>
           <Link to={`/books/${_id}/edit`}>Edit</Link>
           <span> | </span>
-          <button onClick={() => deleteBook(_id)}>Delete</button>
+          <button onClick={deleteBook}>Delete</button>
         </>
       )}
     </div>
