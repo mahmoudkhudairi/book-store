@@ -8,7 +8,9 @@ const ProtectedRoute = () => {
     state: { user },
   } = useBooksContext();
   useEffect(() => {
-    setIsAuthorized(true);
+    if (user !== 'pre-fetch') {
+      setIsAuthorized(true);
+    }
   }, [user]);
 
   return (

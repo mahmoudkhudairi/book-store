@@ -1,8 +1,7 @@
 import React, { useEffect, useReducer, createContext, useContext } from 'react';
-import cookie from 'react-cookies';
-import jwtDecode from 'jwt-decode';
+import axios from 'axios';
 export const Context = createContext(null);
-const initialState = { user: null, books: [], token: null };
+const initialState = { user: 'pre-fetch', books: [] };
 
 function reducer(state = initialState, action) {
   switch (action.type) {
@@ -25,9 +24,15 @@ function reducer(state = initialState, action) {
 function ContextProvider({ children }) {
   const [state, dispatch] = useReducer(reducer, initialState);
   useEffect(() => {
-    const userToken = cookie.load('userToken');
-    const user = userToken && jwtDecode(userToken);
-    dispatch({ type: 'SET_USER', payload: { user, token: userToken } });
+    axios
+      .get('/api/users/user-info')
+      .then((res) => {
+        console.log('HELLO USER', res.data);
+        dispatch({ type: 'SET_USER', payload: { user: res.data } });
+      })
+      .catch((err) => {
+        dispatch({ type: 'SET_USER', payload: { user: null } });
+      });
   }, []);
 
   return <Context.Provider value={{ state, dispatch }}>{children}</Context.Provider>;
