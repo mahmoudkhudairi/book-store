@@ -4,19 +4,16 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const ErrorResponse = require('../utils/errorResponse');
 const SECRET = process.env.JWT_SECRET;
+const Book = require('../models/book');
 const register = async (req, res, next) => {
   try {
     const user = new User(req.body);
     const newUser = await user.save();
-    const userToken = jwt.sign(
-      {
-        _id: newUser._id,
-        email: newUser.email,
-        name: newUser.name,
-        profilePicture: newUser.profilePicture,
-      },
-      SECRET,
-    );
+    const userData = {
+      _id: newUser._id,
+      email: newUser.email,
+    };
+    const userToken = jwt.sign(userData, SECRET);
     res
       .status(201)
       .cookie('userToken', userToken, {
@@ -24,7 +21,7 @@ const register = async (req, res, next) => {
       })
       .json({
         successMessage: 'user created!',
-        user: newUser,
+        user: userData,
       });
   } catch (err) {
     console.log(err);
@@ -45,7 +42,6 @@ const login = async (req, res, next) => {
         const userData = {
           _id: userRecord._id,
           email: userRecord.email,
-          name: userRecord.name,
         };
         const userToken = jwt.sign(
           userData,
@@ -73,7 +69,14 @@ const logout = (req, res, next) => {
     message: 'You have successfully logged out!',
   });
 };
-
+const getLoggedInUserInfo = async (req, res, next) => {
+  try {
+    const user = await User.findById(req.user._id).select('_id name email profilePicture favDict');
+    res.json(user);
+  } catch (err) {
+    next(new ErrorResponse(err.message));
+  }
+};
 const getUserBooks = async (req, res, next) => {
   try {
     const user = await User.findById(req.params.id).populate('books');
@@ -88,8 +91,35 @@ const getUserFavorites = async (req, res, next) => {
       path: 'favoriteBooks',
       populate: { path: 'createdBy', select: '_id name email' },
     });
-    console.log('USER', user);
     res.json(user.favoriteBooks);
+  } catch (err) {
+    next(new ErrorResponse(err.message));
+  }
+};
+const toggleFavorites = async (req, res, next) => {
+  const {
+    params: { id },
+    body,
+  } = req;
+  try {
+    if (body.addToFav) {
+      const user = await User.findByIdAndUpdate(
+        req.user._id,
+        { $addToSet: { favoriteBooks: id }, $set: { ['favDict.' + id]: true } },
+        { new: true },
+      );
+      await Book.findByIdAndUpdate(id, { $inc: { favoriteCount: 1 } }, { new: true });
+      res.json(user);
+    } else {
+      const user = await User.findByIdAndUpdate(
+        req.user._id,
+        { $pull: { favoriteBooks: id }, $unset: { ['favDict.' + id]: 1 } },
+
+        { new: true },
+      );
+      await Book.findByIdAndUpdate(id, { $inc: { favoriteCount: -1 } }, { new: true });
+      res.json(user);
+    }
   } catch (err) {
     next(new ErrorResponse(err.message));
   }
@@ -99,6 +129,8 @@ module.exports = {
   register,
   login,
   logout,
+  getLoggedInUserInfo,
   getUserBooks,
+  toggleFavorites,
   getUserFavorites,
 };

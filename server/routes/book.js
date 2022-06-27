@@ -10,12 +10,9 @@ const {
   createBook,
   updateBook,
   deleteBook,
-  addToFavorites,
-  deleteFromFavorites,
 } = require('../controllers/book');
 router.route('/public').get(getPublicBooks);
 router.use(authenticate);
 router.route('/').get(getBooks).post(cloudinary, createBook);
 router.route('/:id').get(getBookById).put(acl, updateBook).delete(acl, deleteBook);
-router.route('/favorite/:id').post(addToFavorites).delete(deleteFromFavorites);
 module.exports = router;

@@ -34,6 +34,10 @@ const UserSchema = mongoose.Schema(
         ref: 'Book',
       },
     ],
+    favDict: {
+      type: Object,
+      default: {},
+    },
   },
   { timestamps: true },
 );

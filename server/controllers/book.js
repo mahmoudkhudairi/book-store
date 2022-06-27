@@ -1,5 +1,4 @@
 const Book = require('../models/book');
-const User = require('../models/user');
 const axios = require('axios');
 const ErrorResponse = require('../utils/errorResponse');
 
@@ -86,40 +85,6 @@ const updateBook = async (req, res, next) => {
     next(new ErrorResponse(err.message));
   }
 };
-const deleteFromFavorites = async (req, res, next) => {
-  const {
-    params: { id },
-  } = req;
-  try {
-    const user = await User.findByIdAndUpdate(
-      req.user._id,
-      { $pull: { favoriteBooks: id } },
-      { new: true },
-    );
-    await Book.findByIdAndUpdate(id, { $inc: { favoriteCount: -1 } }, { new: true });
-    res.json(user);
-  } catch (err) {
-    console.log('ADD TO FAV ERROR', err);
-    next(new ErrorResponse(err.message));
-  }
-};
-const addToFavorites = async (req, res, next) => {
-  const {
-    params: { id },
-  } = req;
-  try {
-    const user = await User.findByIdAndUpdate(
-      req.user._id,
-      { $addToSet: { favoriteBooks: id } },
-      { new: true },
-    );
-    await Book.findByIdAndUpdate(id, { $inc: { favoriteCount: 1 } }, { new: true });
-    res.json(user);
-  } catch (err) {
-    console.log('ADD TO FAV ERROR', err);
-    next(new ErrorResponse(err.message));
-  }
-};
 
 module.exports = {
   getBooks,
@@ -128,6 +93,4 @@ module.exports = {
   getBookById,
   deleteBook,
   updateBook,
-  addToFavorites,
-  deleteFromFavorites,
 };
