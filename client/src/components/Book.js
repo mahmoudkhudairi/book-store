@@ -51,7 +51,9 @@ const Book = ({ book }) => {
       {createdBy && state.user._id === createdBy._id && (
         <>
           <span> | </span>
-          <Link to={`/books/${_id}/edit`}>Edit</Link>
+          <Link to={`/books/${_id}/edit`} state={book}>
+            Edit
+          </Link>
           <span> | </span>
           <button onClick={deleteBook}>Delete</button>
         </>
