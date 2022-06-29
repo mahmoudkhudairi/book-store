@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const cloudinary = require('../utils/cloudinary');
 const BookSchema = mongoose.Schema(
   {
     title: {
@@ -42,4 +43,30 @@ const BookSchema = mongoose.Schema(
   },
 );
 
+BookSchema.pre('save', async function (next) {
+  try {
+    this.imageUrl = await cloudinary.uploadImage(this._id, this.imageUrl);
+    next();
+  } catch (e) {
+    next(e.message);
+  }
+});
+BookSchema.pre('findOneAndDelete', async function (next) {
+  try {
+    await cloudinary.deleteImage(this.getQuery()._id);
+    next();
+  } catch (err) {
+    next(err.message);
+  }
+});
+BookSchema.pre('findOneAndUpdate', async function (next) {
+  try {
+    if (this._update.imageUrl.length > 120) {
+      this.imageUrl = await cloudinary.uploadImage(this._update._id, this._update.imageUrl);
+    }
+    next();
+  } catch (e) {
+    next(e.message);
+  }
+});
 module.exports = mongoose.model('Book', BookSchema);
