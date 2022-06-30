@@ -5,11 +5,13 @@ import Footer from './components/Footer';
 import ContextProvider from './context';
 function App() {
   return (
-    <ContextProvider>
-      <Header />
-      <Main />
-      <Footer />
-    </ContextProvider>
+    <div className="bg-white dark:bg-black">
+      <ContextProvider>
+        <Header />
+        <Main />
+        <Footer />
+      </ContextProvider>
+    </div>
   );
 }
 

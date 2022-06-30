@@ -4,6 +4,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBars } from '@fortawesome/free-solid-svg-icons';
 import axios from 'axios';
 import { Context } from '../context';
+import ThemeSwitcher from './ThemeSwitcher';
 function Header() {
   const navigate = useNavigate();
   const { state, dispatch } = useContext(Context);
@@ -37,6 +38,7 @@ function Header() {
             >
               Book Store
             </Link>
+
             <button
               className="text-white cursor-pointer text-xl leading-none px-3 py-1 border border-solid border-transparent rounded bg-transparent block md:hidden outline-none focus:outline-none"
               type="button"
@@ -45,6 +47,7 @@ function Header() {
               <FontAwesomeIcon icon={faBars} />
             </button>
           </div>
+
           <div
             className={'md:flex flex-grow items-center' + (navbarOpen ? ' flex' : ' hidden')}
             id="example-navbar-danger"
@@ -85,6 +88,9 @@ function Header() {
                 >
                   Add a New Book
                 </NavLink>
+              </li>
+              <li>
+                <ThemeSwitcher />
               </li>
 
               <li className="nav-item">
