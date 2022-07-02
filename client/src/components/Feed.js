@@ -16,15 +16,7 @@ const Feed = (props) => {
   }, []);
 
   return (
-    <div
-      style={{
-        display: 'flex',
-        flexWrap: 'wrap',
-        justifyContent: 'space-around',
-        gap: '20px',
-        marginTop: '40px',
-      }}
-    >
+    <div className="flex flex-wrap gap-10 justify-around mx-5 min-h-screen">
       {state.books.map((book) => (
         <Book book={book} key={book._id} />
       ))}

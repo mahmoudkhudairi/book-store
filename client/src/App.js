@@ -5,7 +5,7 @@ import Footer from './components/Footer';
 import ContextProvider from './context';
 function App() {
   return (
-    <div className="bg-white dark:bg-black">
+    <div className="bg-gray-300 dark:bg-black ">
       <ContextProvider>
         <Header />
         <Main />

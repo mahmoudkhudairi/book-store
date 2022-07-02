@@ -28,8 +28,8 @@ function Header() {
   };
 
   return (
-    <header>
-      <nav className="relative flex flex-wrap items-center justify-between px-2 py-3 bg-teal-500 mb-3">
+    <header className="sticky top-0 z-10 mb-10">
+      <nav className="relative flex flex-wrap items-center justify-between px-2 py-3 bg-teal-500 dark:bg-teal-800 mb-3">
         <div className="container px-4 mx-auto flex flex-wrap items-center justify-between">
           <div className="w-full relative flex justify-between md:w-auto md:static md:block md:justify-start">
             <Link
@@ -57,7 +57,7 @@ function Header() {
                 <NavLink
                   className={({ isActive }) =>
                     isActive
-                      ? ' px-3 py-2 flex items-center text-sm uppercase font-bold leading-snug text-purple-600 hover:opacity-75'
+                      ? ' px-3 py-2 flex items-center text-sm uppercase font-bold leading-snug text-purple-600 dark:text-purple-500 hover:opacity-75'
                       : ' px-3 py-2 flex items-center text-xs uppercase font-bold leading-snug text-white hover:opacity-75'
                   }
                   to={'/'}
@@ -69,7 +69,7 @@ function Header() {
                 <NavLink
                   className={({ isActive }) =>
                     isActive
-                      ? ' px-3 py-2 flex items-center text-sm uppercase font-bold leading-snug text-purple-600 hover:opacity-75'
+                      ? ' px-3 py-2 flex items-center text-sm uppercase font-bold leading-snug text-purple-600 dark:text-purple-500 hover:opacity-75'
                       : ' px-3 py-2 flex items-center text-xs uppercase font-bold leading-snug text-white hover:opacity-75'
                   }
                   to={'/books/'}
@@ -81,7 +81,7 @@ function Header() {
                 <NavLink
                   className={({ isActive }) =>
                     isActive
-                      ? ' px-3 py-2 flex items-center text-xs uppercase font-extrabold leading-snug text-purple-600 hover:opacity-75'
+                      ? ' px-3 py-2 flex items-center text-xs uppercase font-extrabold leading-snug text-purple-600 dark:text-purple-500 hover:opacity-75'
                       : ' px-3 py-2 flex items-center text-xs uppercase font-bold leading-snug text-white hover:opacity-75'
                   }
                   to={'/books/new'}
@@ -111,7 +111,7 @@ function Header() {
                     <NavLink
                       className={({ isActive }) =>
                         isActive
-                          ? ' px-3 py-2 flex items-center text-sm uppercase font-bold leading-snug text-purple-600 hover:opacity-75'
+                          ? ' px-3 py-2 flex items-center text-sm uppercase font-bold leading-snug text-purple-600 dark:text-purple-500 hover:opacity-75'
                           : ' px-3 py-2 flex items-center text-xs uppercase font-bold leading-snug text-white hover:opacity-75'
                       }
                       to={'/login'}
@@ -122,7 +122,7 @@ function Header() {
                     <NavLink
                       className={({ isActive }) =>
                         isActive
-                          ? ' px-3 py-2 flex items-center text-sm uppercase font-bold leading-snug text-purple-600 hover:opacity-75'
+                          ? ' px-3 py-2 flex items-center text-sm uppercase font-bold leading-snug text-purple-600 dark:text-purple-500 hover:opacity-75'
                           : ' px-3 py-2 flex items-center text-xs uppercase font-bold leading-snug text-white hover:opacity-75'
                       }
                       to={'/register'}

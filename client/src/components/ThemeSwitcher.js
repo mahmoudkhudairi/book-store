@@ -11,6 +11,7 @@ const ThemeSwitcher = () => {
   return (
     <DarkModeSwitch
       className="ml-2.5 md:mt-1 md:ml-0 "
+      sunColor="white"
       checked={darkTheme}
       onChange={toggleDarkMode}
     />
