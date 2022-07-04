@@ -48,16 +48,13 @@ function Header() {
             </button>
           </div>
 
-          <div
-            className={'md:flex flex-grow items-center' + (navbarOpen ? ' flex' : ' hidden')}
-            id="example-navbar-danger"
-          >
+          <div className={'md:flex flex-grow items-center' + (navbarOpen ? ' flex' : ' hidden')}>
             <ul className="flex flex-col md:flex-row list-none md:ml-auto">
               <li className="nav-item">
                 <NavLink
                   className={({ isActive }) =>
                     isActive
-                      ? ' px-3 py-2 flex items-center text-sm uppercase font-bold leading-snug text-purple-600 dark:text-purple-500 hover:opacity-75'
+                      ? ' px-3 py-2 flex items-center text-sm uppercase font-bold leading-snug text-blue-600 dark:text-blue-400 hover:opacity-75'
                       : ' px-3 py-2 flex items-center text-xs uppercase font-bold leading-snug text-white hover:opacity-75'
                   }
                   to={'/'}
@@ -69,7 +66,7 @@ function Header() {
                 <NavLink
                   className={({ isActive }) =>
                     isActive
-                      ? ' px-3 py-2 flex items-center text-sm uppercase font-bold leading-snug text-purple-600 dark:text-purple-500 hover:opacity-75'
+                      ? ' px-3 py-2 flex items-center text-sm uppercase font-bold leading-snug text-blue-600 dark:text-blue-400 hover:opacity-75'
                       : ' px-3 py-2 flex items-center text-xs uppercase font-bold leading-snug text-white hover:opacity-75'
                   }
                   to={'/books/'}
@@ -81,7 +78,7 @@ function Header() {
                 <NavLink
                   className={({ isActive }) =>
                     isActive
-                      ? ' px-3 py-2 flex items-center text-xs uppercase font-extrabold leading-snug text-purple-600 dark:text-purple-500 hover:opacity-75'
+                      ? ' px-3 py-2 flex items-center text-xs uppercase font-extrabold leading-snug text-blue-600 dark:text-blue-400 hover:opacity-75'
                       : ' px-3 py-2 flex items-center text-xs uppercase font-bold leading-snug text-white hover:opacity-75'
                   }
                   to={'/books/new'}
@@ -94,7 +91,7 @@ function Header() {
               </li>
 
               <li className="nav-item">
-                {state.user ? (
+                {state.user && state.user !== 'pre-fetch' ? (
                   <div className="flex flex-col md:flex-row list-none md:ml-auto">
                     <p className="px-3 py-2 flex items-center text-xs uppercase font-bold leading-snug text-white hover:opacity-75">
                       Hello: {state.user.name}
@@ -111,7 +108,7 @@ function Header() {
                     <NavLink
                       className={({ isActive }) =>
                         isActive
-                          ? ' px-3 py-2 flex items-center text-sm uppercase font-bold leading-snug text-purple-600 dark:text-purple-500 hover:opacity-75'
+                          ? ' px-3 py-2 flex items-center text-sm uppercase font-bold leading-snug text-blue-600 dark:text-blue-400 hover:opacity-75'
                           : ' px-3 py-2 flex items-center text-xs uppercase font-bold leading-snug text-white hover:opacity-75'
                       }
                       to={'/login'}
@@ -122,7 +119,7 @@ function Header() {
                     <NavLink
                       className={({ isActive }) =>
                         isActive
-                          ? ' px-3 py-2 flex items-center text-sm uppercase font-bold leading-snug text-purple-600 dark:text-purple-500 hover:opacity-75'
+                          ? ' px-3 py-2 flex items-center text-sm uppercase font-bold leading-snug text-blue-600 dark:text-blue-400 hover:opacity-75'
                           : ' px-3 py-2 flex items-center text-xs uppercase font-bold leading-snug text-white hover:opacity-75'
                       }
                       to={'/register'}

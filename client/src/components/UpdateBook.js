@@ -29,7 +29,6 @@ function UpdateBook() {
         navigate('/books');
       })
       .catch((err) => {
-        console.log('ERROR Response Data', err.response.data);
         setErrors(err.response.data.error.errors);
       });
   };

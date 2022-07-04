@@ -1,7 +1,12 @@
 .App {
   text-align: center;
 }
-
+input[type='date']::-webkit-calendar-picker-indicator {
+  filter: invert(100%);
+}
+.light input[type='date']::-webkit-calendar-picker-indicator {
+  filter: invert(0%);
+}
 .App-logo {
   height: 40vmin;
   pointer-events: none;

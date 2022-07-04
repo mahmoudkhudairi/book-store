@@ -16,10 +16,17 @@ const Feed = (props) => {
   }, []);
 
   return (
-    <div className="flex flex-wrap gap-10 justify-around mx-5 min-h-screen">
-      {state.books.map((book) => (
-        <Book book={book} key={book._id} />
-      ))}
+    <div className="flex flex-wrap gap-10 justify-around mx-5">
+      {state.books.length > 0 ? (
+        state.books.map((book) => <Book book={book} key={book._id} />)
+      ) : (
+        <div className="text-center dark:bg-slate-700 bg-white mx-10 md:w-[50%] md:mx-auto p-10 rounded-xl dark:text-white relative">
+          No books added yet :(
+          <Link className="block mt-2 text-teal-500 hover:underline" to="/books/new">
+            Add a new Book
+          </Link>
+        </div>
+      )}
     </div>
   );
 };

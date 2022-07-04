@@ -1,12 +1,13 @@
 import { useEffect, useState, useContext } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 import axios from 'axios';
 import { Context } from '../context';
-
+import AddToFav from './AddToFav';
+import DeleteBook from './DeleteBook';
 function BookDetails() {
   const { state, dispatch } = useContext(Context);
   const [book, setBook] = useState({});
-  const navigate = useNavigate();
+
   const { id } = useParams();
   useEffect(() => {
     const book = state.books.find((book) => book._id === id);
@@ -23,25 +24,29 @@ function BookDetails() {
         });
     }
   }, []);
-  const deleteBook = () => {
-    axios
-      .delete(`/api/books/${id}`)
-      .then((res) => {
-        dispatch({ type: 'DELETE_BOOK', payload: id });
-        navigate('/');
-      })
-      .catch((err) => console.log(err));
-  };
+
   return (
-    <div>
-      <h2>{book.title}</h2>
-      <p>authors:</p>
-      <p>{book.authors && book.authors.join(',')}</p>
+    <div className="dark:bg-slate-700 bg-white mx-10 md:w-[50%] md:mx-auto p-10 rounded-xl dark:text-white relative">
+      <h2 className="text-center mb-2">{book.title}</h2>
+      {book.createdBy && <AddToFav _id={book._id} book={book} user={state.user} isDetails={true} />}
+      <img src={book.imageUrl} alt="" className="p-1 h-60 mx-auto border rounded-lg my-3" />
+      <p>authors: {book.authors && book.authors.join(', ')}</p>
       <p>Publisher: {book.publisher}</p>
-      <img src={book.imageUrl} alt="" />
       <p>PublishedDate: {book.publishedDate}</p>
-      <p>Description: {book.description}</p>
-      <button onClick={deleteBook}>Delete</button>
+      <p className="break-words">Description: {book.description}</p>
+      {book.createdBy && state.user._id === book.createdBy._id && (
+        <div className="mt-4 flex w-[100%] justify-center gap-4">
+          <Link
+            to={`/books/${book._id}/edit`}
+            state={book}
+            className=" text-center rounded-lg px-2 py-1 border-2 border-green-700 text-green-700 hover:bg-green-700 hover:text-green-100 dark:border-green-500 dark:text-green-500 dark:hover:bg-green-600 dark:hover:text-green-100 duration-300 inline-block w-[80px]"
+          >
+            Edit
+          </Link>
+
+          <DeleteBook _id={id} dispatch={dispatch} isDetails={true} />
+        </div>
+      )}
     </div>
   );
 }

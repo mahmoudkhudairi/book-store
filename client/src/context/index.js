@@ -27,7 +27,6 @@ function ContextProvider({ children }) {
     axios
       .get('/api/users/user-info')
       .then((res) => {
-        console.log('HELLO USER', res.data);
         dispatch({ type: 'SET_USER', payload: { user: res.data } });
       })
       .catch((err) => {
