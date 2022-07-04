@@ -61,7 +61,7 @@ BookSchema.pre('findOneAndDelete', async function (next) {
 });
 BookSchema.pre('findOneAndUpdate', async function (next) {
   try {
-    if (this._update.imageUrl.length > 120) {
+    if (this._update.imageUrl && this._update.imageUrl.length > 120) {
       this.imageUrl = await cloudinary.uploadImage(this._update._id, this._update.imageUrl);
     }
     next();

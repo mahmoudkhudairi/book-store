@@ -1,7 +1,6 @@
 const cloudinary = require('../configs/cloudinary.config');
 
 const uploadImage = async (bookId, imageUrl) => {
-  console.log('WHATI S', process.env.CLOUDINARY_FOLDER_NAME);
   try {
     const uploadResponse = await cloudinary.uploader.upload(imageUrl, {
       public_id: bookId,
