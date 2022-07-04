@@ -11,13 +11,15 @@ const register = async (req, res, next) => {
     const newUser = await user.save();
     const userData = {
       _id: newUser._id,
+      name: newUser.name,
       email: newUser.email,
     };
     const userToken = jwt.sign(userData, SECRET);
     res
       .status(201)
       .cookie('userToken', userToken, {
-        expires: new Date(Date.now() + 9000000),
+        expires: new Date(Date.now() + 900000000),
+        httpOnly: true,
       })
       .json({
         successMessage: 'user created!',
@@ -41,16 +43,14 @@ const login = async (req, res, next) => {
       } else {
         const userData = {
           _id: userRecord._id,
+          name: userRecord.name,
           email: userRecord.email,
         };
-        const userToken = jwt.sign(
-          userData,
-
-          SECRET,
-        );
+        const userToken = jwt.sign(userData, SECRET);
         res
           .cookie('userToken', userToken, {
-            expires: new Date(Date.now() + 600000000000),
+            httpOnly: true,
+            expires: new Date(Date.now() + 900000000),
           })
           .json({
             successMessage: 'logged in Successfully',
