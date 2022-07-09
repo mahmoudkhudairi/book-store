@@ -1,13 +1,13 @@
-import { useEffect, useContext, useState } from 'react';
+import { useState } from 'react';
 import { NavLink, Link, useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBars } from '@fortawesome/free-solid-svg-icons';
 import axios from 'axios';
-import { Context } from '../context';
+import { useBooksContext } from '../context';
 import ThemeSwitcher from './ThemeSwitcher';
 function Header() {
   const navigate = useNavigate();
-  const { state, dispatch } = useContext(Context);
+  const { state, dispatch } = useBooksContext();
   const [navbarOpen, setNavbarOpen] = useState(false);
   const handleLogout = () => {
     axios

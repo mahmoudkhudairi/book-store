@@ -1,11 +1,11 @@
-import { useEffect, useState, useContext } from 'react';
+import { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import axios from 'axios';
-import { Context } from '../context';
+import { useBooksContext } from '../context';
 import AddToFav from './AddToFav';
 import DeleteBook from './DeleteBook';
 function BookDetails() {
-  const { state, dispatch } = useContext(Context);
+  const { state, dispatch } = useBooksContext();
   const [book, setBook] = useState({});
 
   const { id } = useParams();

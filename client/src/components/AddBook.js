@@ -1,10 +1,9 @@
-import React, { useContext } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import Form from './Form';
-import { Context } from '../context';
+import { useBooksContext } from '../context';
 const AddBook = (props) => {
-  const { dispatch } = useContext(Context);
+  const { dispatch } = useBooksContext();
   const navigate = useNavigate();
 
   const submitHandler = (book, setErrors) => {

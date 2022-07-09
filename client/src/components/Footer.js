@@ -2,7 +2,7 @@ import React from 'react';
 
 function Footer() {
   return (
-    <footer className="sm:sticky flex flex-col sm:flex-row items-center sm:justify-between w-screen bottom-0 p-4 mt-5 bg-white shadow dark:bg-gray-800 text-black dark:text-white">
+    <footer className="sm:sticky flex flex-col sm:flex-row items-center sm:justify-between w-full bottom-0 p-4 mt-5 bg-white shadow dark:bg-gray-800 text-black dark:text-white">
       <span className="text-sm  sm:text-center ">
         © 2022{' '}
         <a
