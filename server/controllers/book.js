@@ -82,7 +82,7 @@ const updateBook = async (req, res, next) => {
     const updatedBook = await Book.findByIdAndUpdate(id, body, { new: true, runValidators: true });
     res.json(updatedBook);
   } catch (err) {
-    next(new ErrorResponse(err.message));
+    next(new ErrorResponse(err.message, err.errors));
   }
 };
 
