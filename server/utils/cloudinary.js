@@ -5,6 +5,7 @@ const uploadImage = async (bookId, imageUrl) => {
     const uploadResponse = await cloudinary.uploader.upload(imageUrl, {
       public_id: bookId,
       folder: process.env.CLOUDINARY_FOLDER_NAME,
+      format: 'png',
     });
     return uploadResponse.secure_url;
   } catch (err) {
