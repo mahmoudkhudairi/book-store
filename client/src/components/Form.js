@@ -183,21 +183,21 @@ function Form(props) {
       </div>
 
       <div className="relative z-0 w-full mb-6 group">
-        {book.imageUrl && <img className="pt-4" src={book.imageUrl} alt="" />}
-        <input
-          type="file"
-          name="image"
-          onChange={changeHandler}
-          accept="image/*"
-          className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-200 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-        />
-        {errors.imageUrl ? <span>{errors.imageUrl.message}</span> : null}
         <label
           htmlFor="image"
-          className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 dark:peer-focus:text-blue-200 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+          className="block peer-focus:font-medium text-sm text-gray-500 dark:text-gray-400 mb-4"
         >
           Image
         </label>
+        {book.imageUrl && <img className="pb-4" src={book.imageUrl} alt="" />}
+        <label onChange={changeHandler} htmlFor="imagePicker">
+          <input type="file" name="image" accept="image/*" hidden id="imagePicker" />
+          <span className="text-white bg-teal-500 hover:bg-teal-800 focus:ring-4 focus:outline-none focus:ring-teal-300 font-medium rounded-full text-sm w-full sm:w-auto px-2.5 py-2 text-center dark:bg-teal-800 dark:hover:bg-teal-900 dark:focus:ring-teal-900">
+            Choose Image
+          </span>
+          <span className="block py-1.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-200 focus:outline-none focus:ring-0 focus:border-blue-600 peer"></span>
+        </label>
+        {errors.imageUrl ? <span>{errors.imageUrl.message}</span> : null}
       </div>
       <button
         type="submit"
