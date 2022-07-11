@@ -22,7 +22,7 @@ function reducer(state = initialState, action) {
     case 'SET_ERROR':
       return { ...state, error: action.payload };
     case 'LOGOUT':
-      return initialState;
+      return { ...initialState, ...action.payload };
 
     default:
       return state;
@@ -32,13 +32,16 @@ function reducer(state = initialState, action) {
 function ContextProvider({ children }) {
   const [state, dispatch] = useReducer(reducer, initialState);
   useEffect(() => {
+    dispatch({ type: 'LOADING_START' });
     axios
       .get('/api/users/user-info')
       .then((res) => {
+        dispatch({ type: 'LOADING_END' });
         dispatch({ type: 'SET_USER', payload: { user: res.data } });
       })
       .catch((err) => {
-        dispatch({ type: 'SET_USER', payload: { user: null } });
+        dispatch({ type: 'LOADING_END' });
+        dispatch({ type: 'SET_USER', payload: { user: 'not-loggedin' } });
       });
   }, []);
   // Async actions
@@ -95,7 +98,7 @@ function ContextProvider({ children }) {
           )
           .then((res) => {
             dispatch({ type: 'LOADING_END' });
-            dispatch({ type: 'LOGOUT' });
+            dispatch({ type: 'LOGOUT', payload: { user: 'not-loggedin' } });
             resolve();
           })
           .catch((err) => {
