@@ -26,8 +26,7 @@ const register = async (req, res, next) => {
         user: userData,
       });
   } catch (err) {
-    console.log(err);
-    next(new ErrorResponse(err.message));
+    next(new ErrorResponse(err.message, err.errors));
   }
 };
 
