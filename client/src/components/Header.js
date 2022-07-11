@@ -2,29 +2,14 @@ import { useState } from 'react';
 import { NavLink, Link, useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBars } from '@fortawesome/free-solid-svg-icons';
-import axios from 'axios';
 import { useBooksContext } from '../context';
 import ThemeSwitcher from './ThemeSwitcher';
 function Header() {
   const navigate = useNavigate();
-  const { state, dispatch } = useBooksContext();
+  const { state, logout } = useBooksContext();
   const [navbarOpen, setNavbarOpen] = useState(false);
   const handleLogout = () => {
-    axios
-      .post(
-        '/logout',
-        {},
-        {
-          withCredentials: true,
-        },
-      )
-      .then((res) => {
-        dispatch({ type: 'LOGOUT' });
-        navigate('/');
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    logout().then(() => navigate('/'));
   };
 
   return (

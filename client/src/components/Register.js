@@ -1,11 +1,11 @@
 import { useState } from 'react';
-import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { useBooksContext } from '../context';
 function Register() {
   const navigate = useNavigate();
-  const { state, dispatch } = useBooksContext();
-  const [user, SET_USER] = useState({
+  const { register } = useBooksContext();
+  const [errors, setErrors] = useState({});
+  const [user, setUser] = useState({
     name: '',
     email: '',
     password: '',
@@ -13,7 +13,7 @@ function Register() {
   });
 
   const handleChange = (e) => {
-    SET_USER({
+    setUser({
       ...user,
       [e.target.name]: e.target.value,
     });
@@ -21,17 +21,10 @@ function Register() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
-    axios
-      .post('http://localhost:8000/register', user, {
-        withCredentials: true,
-      })
-      .then((res) => {
-        dispatch({ type: 'SET_USER', payload: { user: res.data.user } });
-        navigate('/');
-      })
+    register(user)
+      .then(() => navigate('/'))
       .catch((err) => {
-        console.log(err);
+        setErrors(err);
       });
   };
 
@@ -52,7 +45,11 @@ function Register() {
           onChange={handleChange}
           className="border border-gray-300  text-sm rounded-lg focus:ring-teal-500 focus:border-teal-500 block w-full p-2.5 "
           placeholder="John Doe"
+          required
         />
+        {errors.name && (
+          <span className="mt-2 text-red-600 dark:text-red-400 block">{errors.name.message}</span>
+        )}
       </div>
       <div className="mb-6">
         <label
@@ -62,7 +59,7 @@ function Register() {
           Enter Email
         </label>
         <input
-          type="text"
+          type="email"
           name="email"
           id="email"
           value={user.email}
@@ -71,6 +68,9 @@ function Register() {
           placeholder="john@domain.com"
           required
         />
+        {errors.email && (
+          <span className="mt-2 text-red-600 dark:text-red-400 block">{errors.email.message}</span>
+        )}
       </div>
       <div className="mb-6">
         <label
@@ -89,6 +89,11 @@ function Register() {
           className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-teal-500 focus:border-teal-500 block w-full p-2.5 "
           required
         />
+        {errors.password && (
+          <span className="mt-2 text-red-600 dark:text-red-400 block">
+            {errors.password.message}
+          </span>
+        )}
       </div>
       <div className="mb-6">
         <label
@@ -106,6 +111,11 @@ function Register() {
           className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-teal-500 focus:border-teal-500 block w-full p-2.5 "
           required
         />
+        {errors.confirmPassword && (
+          <span className="mt-2 text-red-600 dark:text-red-400 block">
+            {errors.confirmPassword.message}
+          </span>
+        )}
       </div>
       <button
         type="submit"

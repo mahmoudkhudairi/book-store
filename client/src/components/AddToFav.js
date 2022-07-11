@@ -1,15 +1,14 @@
 import { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHeart } from '@fortawesome/free-solid-svg-icons';
-import axios from 'axios';
+import { useBooksContext } from '../context';
 const AddToFav = ({ _id, book, user, isDetails }) => {
   const [addToFav, setAddToFav] = useState(false);
+  const { addBookToFav } = useBooksContext();
   const handleFav = () => {
     setAddToFav((previousState) => {
       const newState = !previousState;
-      axios.put(`/api/users/favorite/${_id}`, {
-        addToFav: newState,
-      });
+      addBookToFav(_id, newState);
       return newState;
     });
   };

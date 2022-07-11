@@ -1,4 +1,3 @@
-import React from 'react';
 import { Routes, Route } from 'react-router-dom';
 import Register from './Register';
 import Login from './Login';
@@ -10,9 +9,18 @@ import BookDetails from './BookDetails';
 import UpdateBook from './UpdateBook';
 import ProtectedRoute from './ProtectedRoute';
 import NotFound from './NotFound';
+import Spinner from '../components/Spinner';
+import { useBooksContext } from '../context/';
+import ErrorAlert from './ErrorAlert';
 function Main() {
+  const {
+    state: { loading, error },
+  } = useBooksContext();
+
   return (
     <div className="min-h-screen">
+      {error && <ErrorAlert message={error} />}
+      {loading && <Spinner />}
       <Routes>
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
@@ -24,7 +32,6 @@ function Main() {
           <Route path=":id" element={<BookDetails />} />
           <Route path=":id/edit/" element={<UpdateBook />} />
         </Route>
-
         <Route path="*" element={<NotFound />} />
       </Routes>
     </div>

@@ -1,38 +1,21 @@
 import { useEffect, useState } from 'react';
-import axios from 'axios';
-import { useNavigate, useLocation, useParams } from 'react-router-dom';
+import { useLocation, useParams } from 'react-router-dom';
 import Form from './Form';
+import { useBooksContext } from '../context';
 function UpdateBook() {
   const [oldBook, setOldBook] = useState(null);
-  const navigate = useNavigate();
   const { id } = useParams();
   const { state } = useLocation();
-
+  const { getBookById } = useBooksContext();
   useEffect(() => {
     if (!state) {
-      axios
-        .get(`/api/books/${id}`)
-        .then((res) => {
-          setOldBook(res.data);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
+      getBookById(id).then((book) => setOldBook(book));
     } else {
       setOldBook(state);
     }
   }, []);
-  const submitHandler = (book, setErrors) => {
-    axios
-      .put(`/api/books/${id}`, book)
-      .then((res) => {
-        navigate('/books');
-      })
-      .catch((err) => {
-        setErrors(err.response.data.error.errors);
-      });
-  };
-  return <Form submitHandler={submitHandler} buttonText={'Update Book'} oldBook={oldBook} />;
+
+  return <Form buttonText={'Update Book'} oldBook={oldBook} />;
 }
 
 export default UpdateBook;

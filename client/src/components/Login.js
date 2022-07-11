@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
-import axios from 'axios';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useBooksContext } from '../context';
 function Login() {
-  const { state, dispatch } = useBooksContext();
+  const { login } = useBooksContext();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
@@ -11,24 +10,15 @@ function Login() {
   const destination = locationState ? locationState.destination : '/';
   const handleSubmit = (event) => {
     event.preventDefault();
-    axios
-      .post(
-        '/login',
-        {
-          email: email,
-          password: password,
-        },
-        {
-          withCredentials: true,
-        },
-      )
-      .then((res) => {
-        dispatch({ type: 'SET_USER', payload: { user: res.data.user } });
+    const user = {
+      email: email,
+      password: password,
+    };
+    login(user)
+      .then(() => {
         navigate(destination, { replace: true });
       })
-      .catch((err) => {
-        console.log(err.response.data);
-      });
+      .catch((err) => {});
   };
 
   return (

@@ -1,7 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAdd, faMinus } from '@fortawesome/free-solid-svg-icons';
+import { useBooksContext } from '../context';
+import { useNavigate } from 'react-router-dom';
 function Form(props) {
+  const navigate = useNavigate();
   const [authorInputList, setAuthorInputList] = useState(['']);
   const [book, setBook] = useState({
     title: '',
@@ -11,7 +14,7 @@ function Form(props) {
     description: '',
     imageUrl: '',
   });
-
+  const { addBook, updateBook } = useBooksContext();
   useEffect(() => {
     if (!!props.oldBook) {
       setBook(props.oldBook);
@@ -22,8 +25,19 @@ function Form(props) {
   const [errors, setErrors] = useState({});
   const submitHandler = (e) => {
     e.preventDefault();
-
-    props.submitHandler(book, setErrors);
+    if (props.isAdd) {
+      addBook(book)
+        .then(() => navigate('/books'))
+        .catch((error) => {
+          setErrors(error);
+        });
+    } else {
+      updateBook(book)
+        .then(() => navigate('/books'))
+        .catch((error) => {
+          setErrors(error);
+        });
+    }
   };
   const handleAuthorsInputChange = (e, index) => {
     const { value } = e.target;
@@ -76,7 +90,9 @@ function Form(props) {
         >
           Book Title
         </label>
-        {errors.title ? <span className="text-danger">{errors.title.message}</span> : null}
+        {errors.title && (
+          <span className="mt-2 text-red-600 dark:text-red-400 block">{errors.title.message}</span>
+        )}
       </div>
       <div className="relative z-0 w-full mb-6 group">
         <input
@@ -96,7 +112,11 @@ function Form(props) {
         >
           Description
         </label>
-        {errors.description ? <span>{errors.description.message}</span> : null}
+        {errors.description && (
+          <span className="mt-2 text-red-600 dark:text-red-400 block">
+            {errors.description.message}
+          </span>
+        )}
       </div>
 
       <div className="relative z-0 w-full mb-6 group">
@@ -138,7 +158,11 @@ function Form(props) {
         >
           Authors
         </label>
-        {errors.authors ? <span>{errors.authors.message}</span> : null}
+        {errors.authors && (
+          <span className="mt-2 text-red-600 dark:text-red-400 block">
+            {errors.authors.message}
+          </span>
+        )}
       </div>
 
       <div className="grid xl:grid-cols-2 xl:gap-6">
@@ -159,7 +183,11 @@ function Form(props) {
           >
             Publisher
           </label>
-          {errors.publisher ? <span>{errors.publisher.message}</span> : null}
+          {errors.publisher && (
+            <span className="mt-2 text-red-600 dark:text-red-400 block">
+              {errors.publisher.message}
+            </span>
+          )}
         </div>
         <div className="relative z-0 w-full mb-6 group">
           <input
@@ -178,7 +206,11 @@ function Form(props) {
           >
             published Date
           </label>
-          {errors.publishedDate ? <span>{errors.publishedDate.message}</span> : null}
+          {errors.publishedDate && (
+            <span className="mt-2 text-red-600 dark:text-red-400 block">
+              {errors.publishedDate.message}
+            </span>
+          )}
         </div>
       </div>
 
@@ -197,7 +229,11 @@ function Form(props) {
           </span>
           <span className="block py-1.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-200 focus:outline-none focus:ring-0 focus:border-blue-600 peer"></span>
         </label>
-        {errors.imageUrl ? <span>{errors.imageUrl.message}</span> : null}
+        {errors.imageUrl && (
+          <span className="mt-2 text-red-600 dark:text-red-400 block">
+            {errors.imageUrl.message}
+          </span>
+        )}
       </div>
       <button
         type="submit"
