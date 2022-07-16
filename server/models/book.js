@@ -45,7 +45,11 @@ const BookSchema = mongoose.Schema(
 
 BookSchema.pre('save', async function (next) {
   try {
-    this.imageUrl = await cloudinary.uploadImage(this._id, this.imageUrl);
+    this.imageUrl = await cloudinary.uploadImage(
+      this._id,
+      this.imageUrl,
+      process.env.CLOUDINARY_BOOKS_FOLDER_NAME,
+    );
     next();
   } catch (e) {
     next(e.message);
@@ -53,7 +57,7 @@ BookSchema.pre('save', async function (next) {
 });
 BookSchema.pre('findOneAndDelete', async function (next) {
   try {
-    await cloudinary.deleteImage(this.getQuery()._id);
+    await cloudinary.deleteImage(this.getQuery()._id, process.env.CLOUDINARY_FOLDER_NAME);
     next();
   } catch (err) {
     next(err.message);
@@ -62,7 +66,11 @@ BookSchema.pre('findOneAndDelete', async function (next) {
 BookSchema.pre('findOneAndUpdate', async function (next) {
   try {
     if (this._update.imageUrl && this._update.imageUrl.length > 120) {
-      this.imageUrl = await cloudinary.uploadImage(this._update._id, this._update.imageUrl);
+      this.getUpdate().imageUrl = await cloudinary.uploadImage(
+        this._update._id,
+        this._update.imageUrl,
+        process.env.CLOUDINARY_BOOKS_FOLDER_NAME,
+      );
     }
     next();
   } catch (e) {
