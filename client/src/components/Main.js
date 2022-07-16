@@ -25,7 +25,9 @@ function Main() {
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/" element={<Home />} />
-        <Route path="/profile/:username" element={<Profile />} />
+        <Route path="/profile" element={<ProtectedRoute />}>
+          <Route path=":username" element={<Profile />} />
+        </Route>
         <Route path="/books" element={<ProtectedRoute />}>
           <Route path="new" element={<AddBook />} />
           <Route path="" element={<Feed />} />

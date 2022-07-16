@@ -1,11 +1,13 @@
 import React, { useEffect, useReducer, createContext, useContext } from 'react';
 import axios from 'axios';
 export const Context = createContext({});
-const initialState = { user: 'pre-fetch', books: [], loading: false, error: null };
+const initialState = { user: 'pre-fetch', books: [], publicBooks: [], loading: false, error: null };
 
 function reducer(state = initialState, action) {
   switch (action.type) {
     case 'SET_USER':
+      return { ...state, ...action.payload };
+    case 'GET_PUBLIC_BOOKS':
       return { ...state, ...action.payload };
     case 'GET_BOOKS':
       return { ...state, ...action.payload };
@@ -80,7 +82,6 @@ function ContextProvider({ children }) {
           })
           .catch((err) => {
             dispatch({ type: 'LOADING_END' });
-            console.log(err.response.data.errors);
             reject(err.response.data.errors);
           });
       });
@@ -114,7 +115,7 @@ function ContextProvider({ children }) {
         .get('/api/books/public')
         .then((res) => {
           dispatch({ type: 'LOADING_END' });
-          dispatch({ type: 'GET_BOOKS', payload: { books: res.data } });
+          dispatch({ type: 'GET_PUBLIC_BOOKS', payload: { publicBooks: res.data } });
         })
         .catch((err) => {
           dispatch({ type: 'LOADING_END' });
@@ -210,6 +211,36 @@ function ContextProvider({ children }) {
     addBookToFav: (id, addToFav) => {
       axios.put(`/api/users/favorite/${id}`, {
         addToFav,
+      });
+    },
+    getProfile: (username) => {
+      return new Promise((resolve, reject) => {
+        dispatch({ type: 'LOADING_START' });
+        axios
+          .get(`/api/users/profile/${username.replaceAll('-', ' ')}`)
+          .then((res) => {
+            dispatch({ type: 'LOADING_END' });
+            resolve(res.data);
+          })
+          .catch((err) => {
+            dispatch({ type: 'LOADING_END' });
+            dispatch({ type: 'SET_ERROR', payload: `Cannot fetch Profile` });
+          });
+      });
+    },
+    updateProfile: (username, userInfo) => {
+      return new Promise((resolve, reject) => {
+        dispatch({ type: 'LOADING_START' });
+        axios
+          .put(`/api/users/profile/${username.replaceAll('-', ' ')}`, userInfo)
+          .then((res) => {
+            dispatch({ type: 'LOADING_END' });
+            resolve(res.data);
+          })
+          .catch((err) => {
+            dispatch({ type: 'LOADING_END' });
+            dispatch({ type: 'SET_ERROR', payload: `Cannot update Profile` });
+          });
       });
     },
   };
