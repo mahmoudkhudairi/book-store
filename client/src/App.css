@@ -11,7 +11,14 @@ input[type='date']::-webkit-calendar-picker-indicator {
   height: 40vmin;
   pointer-events: none;
 }
-
+.loading {
+  filter: blur(10px);
+  clip-path: inset(0);
+}
+.loaded {
+  filter: blur(0px);
+  transition: filter 0.5s linear;
+}
 @media (prefers-reduced-motion: no-preference) {
   .App-logo {
     animation: App-logo-spin infinite 20s linear;

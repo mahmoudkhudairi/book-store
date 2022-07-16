@@ -1,9 +1,10 @@
 import { Link } from 'react-router-dom';
-
+import ProgressiveImg from './ProgressiveImg';
 import { useBooksContext } from '../context';
 import AddToFav from './AddToFav';
 import DeleteBook from './DeleteBook';
-const Book = ({ book }) => {
+import placeholderSrc from '../images/placeholder.png';
+const Book = ({ book, isFeed }) => {
   const { _id, title, imageUrl, createdBy } = book;
   const { state, dispatch } = useBooksContext();
 
@@ -13,12 +14,16 @@ const Book = ({ book }) => {
       className="w-[320px] min-h-[475px] rounded-lg shadow-xl bg-white dark:bg-slate-600 p-8 text-center dark:text-white text-black relative"
     >
       <h2 className="font-bold text-lg capitalize">{title}</h2>
-      {createdBy && <AddToFav _id={_id} book={book} user={state.user} />}
-      <img src={imageUrl} alt={''} className="p-1 h-60 mx-auto border rounded-lg my-3" />
+      {isFeed && <AddToFav _id={_id} book={book} user={state.user} />}
+      <ProgressiveImg src={imageUrl} placeholderSrc={placeholderSrc} />
       <p>
         Added By:
         {createdBy ? (
-          <Link to={`/profile/${createdBy.name}`} className="pl-1 text-teal-500">
+          <Link
+            to={`/profile/${createdBy.name.replace(/\s+/g, '-')}`}
+            state={{ _id: createdBy._id }}
+            className="pl-1 text-teal-500"
+          >
             {createdBy.name}
           </Link>
         ) : (
