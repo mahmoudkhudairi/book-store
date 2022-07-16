@@ -76,23 +76,35 @@ const getLoggedInUserInfo = async (req, res, next) => {
     next(new ErrorResponse(err.message));
   }
 };
-const getUserBooks = async (req, res, next) => {
+const getUserProfile = async (req, res, next) => {
+  const {
+    params: { username },
+  } = req;
   try {
-    const user = await User.findById(req.params.id).populate('books');
-    res.json(user.books);
+    const user = await User.findOne({ name: username })
+      .populate({
+        path: 'favoriteBooks',
+        populate: { path: 'createdBy', select: '_id name email' },
+      })
+      .select('_id name email profilePicture about favoriteBooks');
+    const books = await Book.find({ createdBy: user._id }).populate('createdBy', '_id name email');
+    res.json({ ...user.toObject(), books });
   } catch (err) {
     next(new ErrorResponse(err.message));
   }
 };
-const getUserFavorites = async (req, res, next) => {
+const updateUserProfile = async (req, res, next) => {
+  const {
+    params: { username },
+    body,
+  } = req;
   try {
-    const user = await User.findById(req.user._id).populate({
-      path: 'favoriteBooks',
-      populate: { path: 'createdBy', select: '_id name email' },
+    const updatedUser = await User.findOneAndUpdate({ name: username }, body, {
+      new: true,
     });
-    res.json(user.favoriteBooks);
+    res.json(updatedUser);
   } catch (err) {
-    next(new ErrorResponse(err.message));
+    next(new ErrorResponse(err.message, err.errors));
   }
 };
 const toggleFavorites = async (req, res, next) => {
@@ -129,7 +141,7 @@ module.exports = {
   login,
   logout,
   getLoggedInUserInfo,
-  getUserBooks,
+  getUserProfile,
   toggleFavorites,
-  getUserFavorites,
+  updateUserProfile,
 };
