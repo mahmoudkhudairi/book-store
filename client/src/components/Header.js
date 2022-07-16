@@ -12,9 +12,7 @@ function Header() {
   const handleLogout = () => {
     logout().then(() => navigate('/'));
   };
-  useEffect(() => {
-    console.log('USER??', state);
-  }, [state]);
+
   if (state.user !== 'pre-fetch') {
     return (
       <header className="sticky top-0 z-10 mb-10">

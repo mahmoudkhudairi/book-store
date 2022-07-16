@@ -4,7 +4,7 @@ import { useBooksContext } from '../context';
 import { useLocation } from 'react-router-dom';
 const Home = (props) => {
   const {
-    state: { books },
+    state: { publicBooks },
     getPublicBooks,
   } = useBooksContext();
   const location = useLocation();
@@ -14,7 +14,7 @@ const Home = (props) => {
 
   return (
     <div className="flex flex-wrap items-center gap-10  justify-around mx-5">
-      {books && books.map((book) => <Book book={book} key={book._id} />)}
+      {publicBooks && publicBooks.map((book) => <Book book={book} key={book._id} />)}
     </div>
   );
 };

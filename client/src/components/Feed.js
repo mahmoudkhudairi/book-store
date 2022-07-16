@@ -22,7 +22,7 @@ const Feed = (props) => {
           </Link>
         </div>
       ) : (
-        books.map((book) => <Book book={book} key={book._id} />)
+        books.map((book) => <Book book={book} isFeed={true} key={book._id} />)
       )}
     </div>
   );

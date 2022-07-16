@@ -16,7 +16,13 @@ const ProtectedRoute = () => {
   return (
     <>
       {isAuthorized && (
-        <>{user ? <Outlet /> : <Navigate to="/login" state={{ destination: location }} />}</>
+        <>
+          {user !== 'not-loggedin' ? (
+            <Outlet />
+          ) : (
+            <Navigate to="/login" state={{ destination: location }} />
+          )}
+        </>
       )}
     </>
   );
