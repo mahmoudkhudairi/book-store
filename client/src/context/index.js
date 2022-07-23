@@ -72,7 +72,7 @@ function ContextProvider({ children }) {
       return new Promise((resolve, reject) => {
         dispatch({ type: 'LOADING_START' });
         axios
-          .post('http://localhost:8000/register', user, {
+          .post('/register', user, {
             withCredentials: true,
           })
           .then((res) => {
