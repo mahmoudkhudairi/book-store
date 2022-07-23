@@ -1,6 +1,6 @@
 'use strict';
 const User = require('../models/user');
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const ErrorResponse = require('../utils/errorResponse');
 const SECRET = process.env.JWT_SECRET;

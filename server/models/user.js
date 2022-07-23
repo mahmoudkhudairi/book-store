@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcryptjs');
 const cloudinary = require('../utils/cloudinary');
 const UserSchema = mongoose.Schema(
   {
