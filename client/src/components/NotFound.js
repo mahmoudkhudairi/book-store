@@ -15,7 +15,7 @@ const NotFound = () => {
           <Link
             rel="noopener noreferrer"
             to="/"
-            className="px-8 py-3 font-semibold rounded bg-teal-500 text-white"
+            className="px-8 py-3 font-semibold rounded bg-catalina-blue-500 text-white"
           >
             Back to homepage
           </Link>

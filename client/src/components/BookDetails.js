@@ -1,25 +1,32 @@
 import { useEffect, useState } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link, useLocation } from 'react-router-dom';
 import { useBooksContext } from '../context';
 import AddToFav from './AddToFav';
 import DeleteBook from './DeleteBook';
 function BookDetails() {
   const { state, getBookById } = useBooksContext();
   const [book, setBook] = useState(null);
-
+  const {
+    state: { isPublicBook },
+  } = useLocation();
   const { id } = useParams();
   useEffect(() => {
-    const book = state.books.find((book) => book._id === id);
-    if (state.books && book) {
+    if (isPublicBook) {
+      const book = state.publicBooks.find((book) => book._id === id);
       setBook(book);
     } else {
-      getBookById(id).then((book) => setBook(book));
+      const book = state.books.find((book) => book._id === id);
+      if (state.books && book) {
+        setBook(book);
+      } else {
+        getBookById(id).then((book) => setBook(book));
+      }
     }
   }, []);
 
   if (book) {
     return (
-      <div className="dark:bg-slate-700 bg-white mx-10 md:w-[50%] md:mx-auto p-10 rounded-xl dark:text-white relative">
+      <div className="dark:bg-slate-700 bg-gray-100 mx-10 md:w-[50%] md:mx-auto p-10 rounded-xl dark:text-white relative">
         <h2 className="text-center mb-2">{book.title}</h2>
         {book.createdBy && (
           <AddToFav _id={book._id} book={book} user={state.user} isDetails={true} />

@@ -43,7 +43,7 @@ function Register() {
           id="name"
           value={user.name}
           onChange={handleChange}
-          className="border border-gray-300  text-sm rounded-lg focus:ring-teal-500 focus:border-teal-500 block w-full p-2.5 "
+          className="border border-gray-300  text-sm rounded-lg focus:ring-catalina-blue-500 focus:border-catalina-blue-500 block w-full p-2.5 "
           placeholder="John Doe"
           required
         />
@@ -64,7 +64,7 @@ function Register() {
           id="email"
           value={user.email}
           onChange={handleChange}
-          className="border border-gray-300  text-sm rounded-lg focus:ring-teal-500 focus:border-teal-500 block w-full p-2.5 "
+          className="border border-gray-300  text-sm rounded-lg focus:ring-catalina-blue-500 focus:border-catalina-blue-500 block w-full p-2.5 "
           placeholder="john@domain.com"
           required
         />
@@ -87,7 +87,7 @@ function Register() {
           value={user.password}
           onChange={handleChange}
           placeholder="password"
-          className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-teal-500 focus:border-teal-500 block w-full p-2.5 "
+          className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-catalina-blue-500 focus:border-catalina-blue-500 block w-full p-2.5 "
           required
         />
         {errors.password && (
@@ -110,7 +110,7 @@ function Register() {
           value={user.confirmPassword}
           onChange={handleChange}
           placeholder="password"
-          className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-teal-500 focus:border-teal-500 block w-full p-2.5 "
+          className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-catalina-blue-500 focus:border-catalina-blue-500 block w-full p-2.5 "
           required
         />
         {errors.confirmPassword && (
@@ -121,7 +121,7 @@ function Register() {
       </div>
       <button
         type="submit"
-        className="text-white bg-teal-500 hover:bg-teal-500 focus:ring-4 focus:outline-none focus:ring-teal-300 font-medium rounded-full text-sm w-full  px-5 py-2.5 text-center "
+        className="text-white bg-catalina-blue-500 hover:bg-catalina-blue-500 focus:ring-4 focus:outline-none focus:ring-catalina-blue-500 font-medium rounded-full text-sm w-full  px-5 py-2.5 text-center "
       >
         Register
       </button>

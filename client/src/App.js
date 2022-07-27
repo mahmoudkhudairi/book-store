@@ -4,8 +4,9 @@ import Main from './components/Main';
 import Footer from './components/Footer';
 import ContextProvider from './context';
 function App() {
+  
   return (
-    <div className="bg-gray-300 dark:bg-black ">
+    <div className="bg-white dark:bg-gray-900 ">
       <ContextProvider>
         <Header />
         <Main />

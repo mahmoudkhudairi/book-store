@@ -39,7 +39,7 @@ const UserInfo = (props) => {
   return (
     <div className="max-w-[80%] my-16 mx-auto rounded-lg shadow-xl bg-gray-600 dark:bg-slate-800 p-8 text-center text-white relative">
       <div className="absolute hover:cursor-pointer  top-5 right-5  text-gray-300 ">
-        <FontAwesomeIcon className={`h-4 w-4 text-teal-500`} icon={faPen} onClick={handleClick} />
+        <FontAwesomeIcon className={`h-4 w-4 text-catalina-blue-500`} icon={faPen} onClick={handleClick} />
       </div>
       {shouldEdit ? (
         <>
@@ -51,7 +51,7 @@ const UserInfo = (props) => {
               className="absolute inline-flex items-center justify-center h-[120px] w-[120px] ml-[-120px] bg-black bg-opacity-40 text-center p-1 rounded-full"
             >
               <input type="file" name="image" accept="image/*" hidden id="imagePicker" />
-              <FontAwesomeIcon className={`h-4 w-4 text-teal-500`} icon={faCamera} />
+              <FontAwesomeIcon className={`h-4 w-4 text-catalina-blue-500`} icon={faCamera} />
             </label>
           </div>
           <div className="text-black font-bold flex flex-col gap-5 w-1/2 mx-auto">
@@ -71,7 +71,7 @@ const UserInfo = (props) => {
             />
           </div>
           <button
-            className="ml-4 mt-3 rounded-lg px-2 py-1  bg-teal-500  text-white hover:bg-teal-600 duration-300 inline-flex justify-center items-center"
+            className="ml-4 mt-3 rounded-lg px-2 py-1  bg-catalina-blue-500  text-white hover:bg-catalina-blue-600 duration-300 inline-flex justify-center items-center"
             onClick={handleUpdate}
             disabled={shouldSpin}
           >
@@ -101,7 +101,7 @@ const UserInfo = (props) => {
           <div className=" top-1/2 left-1/2 mt-[-85px] mb-4">
             <Avatar name={userInfo.name} src={userInfo.profilePicture} size={120} round />
           </div>
-          <h2 className="text-teal-500 font-bold">{userInfo.name}</h2>
+          <h2 className="text-catalina-blue-500 font-bold">{userInfo.name}</h2>
           <p>About: {userInfo.about}</p>
         </>
       )}

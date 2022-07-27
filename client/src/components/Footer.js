@@ -2,12 +2,12 @@ import React from 'react';
 
 function Footer() {
   return (
-    <footer className="sm:sticky flex flex-col sm:flex-row items-center sm:justify-between w-full bottom-0 p-4 mt-5 bg-white shadow dark:bg-gray-800 text-black dark:text-white">
+    <footer className="flex flex-col sm:flex-row items-center sm:justify-between w-full bottom-0 p-4 mt-5 bg-gray-100 shadow dark:bg-gray-400 text-black dark:text-white">
       <span className="text-sm  sm:text-center ">
         © 2022{' '}
         <a
           href="https://www.linkedin.com/in/mahmoudkhudairi/"
-          className="text-teal-500  hover:underline"
+          className="text-catalina-blue-500  hover:underline"
         >
           Mahmoud Khudairi
         </a>{' '}
