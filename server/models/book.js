@@ -37,6 +37,11 @@ const BookSchema = mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: 'User',
     },
+    status: {
+      type: String,
+      enum: ['APPROVED', 'DECLINED', 'PENDING'],
+      default: 'PENDING',
+    },
   },
   {
     timestamps: true,

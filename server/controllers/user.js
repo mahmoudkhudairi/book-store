@@ -13,6 +13,7 @@ const register = async (req, res, next) => {
       _id: newUser._id,
       name: newUser.name,
       email: newUser.email,
+      role: newUser.role,
     };
     const userToken = jwt.sign(userData, SECRET);
     res
@@ -44,6 +45,7 @@ const login = async (req, res, next) => {
           _id: userRecord._id,
           name: userRecord.name,
           email: userRecord.email,
+          role: userRecord.role,
         };
         const userToken = jwt.sign(userData, SECRET);
         res
@@ -70,7 +72,9 @@ const logout = (req, res, next) => {
 };
 const getLoggedInUserInfo = async (req, res, next) => {
   try {
-    const user = await User.findById(req.user._id).select('_id name email profilePicture favDict');
+    const user = await User.findById(req.user._id).select(
+      '_id name email profilePicture favDict role',
+    );
     res.json(user);
   } catch (err) {
     next(new ErrorResponse(err.message));

@@ -1,7 +1,6 @@
 const Book = require('../models/book');
 const axios = require('axios');
 const ErrorResponse = require('../utils/errorResponse');
-
 const getPublicBooks = async (req, res, next) => {
   if (process.env.NODE_ENV === 'production') {
     try {
@@ -35,7 +34,7 @@ const getPublicBooks = async (req, res, next) => {
 };
 const getBooks = async (req, res, next) => {
   try {
-    const books = await Book.find({}).populate('createdBy', '_id name email');
+    const books = await Book.find({ status: 'APPROVED' }).populate('createdBy', '_id name email');
     res.json(books);
   } catch (err) {
     next(new ErrorResponse(err.message));
@@ -56,7 +55,10 @@ const getBookById = async (req, res, next) => {
     params: { id },
   } = req;
   try {
-    const book = await Book.findById(id).populate('createdBy', '_id name email');
+    const book = await Book.findById(id)
+      .where('status')
+      .equals('APPROVED')
+      .populate('createdBy', '_id name email');
     res.json(book);
   } catch (err) {
     next(new ErrorResponse(err.message));
@@ -79,8 +81,26 @@ const updateBook = async (req, res, next) => {
   } = req;
 
   try {
-    const updatedBook = await Book.findByIdAndUpdate(id, body, { new: true, runValidators: true });
+    const updatedBook = await Book.findByIdAndUpdate(id, body, {
+      new: true,
+      runValidators: true,
+    }).populate('createdBy', '_id name email');
     res.json(updatedBook);
+  } catch (err) {
+    next(new ErrorResponse(err.message, err.errors));
+  }
+};
+const getDashboardData = async (req, res, next) => {
+  const page = Number(req.query.page) || 0;
+  const booksPerPage = Number(req.query.booksPerPage) || 10;
+  try {
+    const books = await Book.find({})
+      .sort({ status: -1, createdAt: -1 })
+      .skip(page * booksPerPage)
+      .limit(booksPerPage)
+      .populate('createdBy', '_id name email');
+    const booksCount = await Book.count({});
+    res.json({ books, booksCount });
   } catch (err) {
     next(new ErrorResponse(err.message, err.errors));
   }
@@ -93,4 +113,5 @@ module.exports = {
   getBookById,
   deleteBook,
   updateBook,
+  getDashboardData,
 };
