@@ -27,7 +27,12 @@ function Form(props) {
     e.preventDefault();
     if (props.isAdd) {
       addBook(book)
-        .then(() => navigate('/books'))
+        .then(() => {
+          alert(
+            "Your book is added successfully and it will be displayed once it's approved by Admin",
+          );
+          navigate('/books');
+        })
         .catch((error) => {
           setErrors(error);
         });

@@ -1,7 +1,14 @@
 import React, { useEffect, useReducer, createContext, useContext } from 'react';
 import axios from 'axios';
 export const Context = createContext({});
-const initialState = { user: 'pre-fetch', books: [], publicBooks: [], loading: false, error: null };
+const initialState = {
+  user: 'pre-fetch',
+  books: [],
+  publicBooks: [],
+  dashboardData: null,
+  loading: false,
+  error: null,
+};
 
 function reducer(state = initialState, action) {
   switch (action.type) {
@@ -17,6 +24,10 @@ function reducer(state = initialState, action) {
       return { ...state, books: [action.payload, ...state.books] };
     case 'UPDATE_BOOK':
       return { ...state, books: action.payload };
+    case 'GET_DASHBOARD':
+      return { ...state, dashboardData: action.payload };
+    case 'UPDATE_DASHBOARD':
+      return { ...state, dashboardData: action.payload };
     case 'LOADING_START':
       return { ...state, loading: true };
     case 'LOADING_END':
@@ -59,7 +70,7 @@ function ContextProvider({ children }) {
             dispatch({ type: 'LOADING_END' });
             state.error && dispatch({ type: 'SET_ERROR', payload: null });
             dispatch({ type: 'SET_USER', payload: { user: res.data.user } });
-            resolve();
+            resolve(res.data.user.role);
           })
           .catch((err) => {
             dispatch({ type: 'LOADING_END' });
@@ -160,6 +171,7 @@ function ContextProvider({ children }) {
           .get(`/api/books/${id}`)
           .then((res) => {
             dispatch({ type: 'LOADING_END' });
+            !res.data && dispatch({ type: 'SET_ERROR', payload: `Cannot find book with id ${id}` });
             resolve(res.data);
           })
           .catch((err) => {
@@ -242,6 +254,40 @@ function ContextProvider({ children }) {
             dispatch({ type: 'SET_ERROR', payload: `Cannot update Profile` });
           });
       });
+    },
+    getAdminDashboard: (page, booksPerPage) => {
+      dispatch({ type: 'LOADING_START' });
+      axios
+        .get(`/api/admin/dashboard?page=${page}&booksPerPage=${booksPerPage}`)
+        .then((res) => {
+          dispatch({ type: 'GET_DASHBOARD', payload: res.data });
+          dispatch({ type: 'LOADING_END' });
+        })
+        .catch((err) => {
+          dispatch({ type: 'GET_DASHBOARD', payload: null });
+          dispatch({ type: 'SET_ERROR', payload: `Cannot load dashboard` });
+          dispatch({ type: 'LOADING_END' });
+        });
+    },
+    updateAdminBookStatus: (bookId, status) => {
+      dispatch({ type: 'LOADING_START' });
+      axios
+        .put(`/api/admin/dashboard/update-status/${bookId}`, { status })
+        .then((res) => {
+          dispatch({ type: 'LOADING_END' });
+          const books = state.dashboardData.books.map((book) => {
+            if (book._id === bookId) {
+              return res.data;
+            } else {
+              return book;
+            }
+          });
+          dispatch({ type: 'UPDATE_DASHBOARD', payload: { ...state.dashboardData, books } });
+        })
+        .catch((err) => {
+          dispatch({ type: 'LOADING_END' });
+          dispatch({ type: 'SET_ERROR', payload: `Cannot load dashboard` });
+        });
     },
   };
   return (

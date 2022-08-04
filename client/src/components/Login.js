@@ -14,11 +14,13 @@ function Login() {
       email: email,
       password: password,
     };
-    login(user)
-      .then(() => {
+    login(user).then((role) => {
+      if (role === 'ADMIN') {
+        navigate('/admin/dashboard', { replace: true });
+      } else {
         navigate(destination, { replace: true });
-      })
-      .catch((err) => {});
+      }
+    });
   };
 
   return (

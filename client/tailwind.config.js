@@ -19,7 +19,7 @@ module.exports = {
       },
     },
   },
-  plugins: [],
+  plugins: [require('tailwind-scrollbar')],
   variants: {
     extend: {
       visibility: ['group-hover'],
