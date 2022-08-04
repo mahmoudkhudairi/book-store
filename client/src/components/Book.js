@@ -21,7 +21,7 @@ const Book = ({ book, isFeed }) => {
         Added By:
         {createdBy ? (
           <Link
-            to={`/profile/${createdBy.name.replace(/\s+/g, '-')}`}
+            to={`/profile/${createdBy.name?.replace(/\s+/g, '-')}`}
             state={{ _id: createdBy._id }}
             className="pl-1 font-bold underline underline-offset-2 hover:dark:text-catalina-blue-900 hover:text-catalina-blue-400"
           >

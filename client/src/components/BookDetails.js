@@ -6,12 +6,10 @@ import DeleteBook from './DeleteBook';
 function BookDetails() {
   const { state, getBookById } = useBooksContext();
   const [book, setBook] = useState(null);
-  const {
-    state: { isPublicBook },
-  } = useLocation();
+  const { state: locationState } = useLocation();
   const { id } = useParams();
   useEffect(() => {
-    if (isPublicBook) {
+    if (locationState?.isPublicBook) {
       const book = state.publicBooks.find((book) => book._id === id);
       setBook(book);
     } else {
