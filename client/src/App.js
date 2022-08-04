@@ -4,9 +4,8 @@ import Main from './components/Main';
 import Footer from './components/Footer';
 import ContextProvider from './context';
 function App() {
-  
   return (
-    <div className="bg-white dark:bg-gray-900 ">
+    <div className="min-h-screen bg-white dark:bg-gray-900 relative">
       <ContextProvider>
         <Header />
         <Main />

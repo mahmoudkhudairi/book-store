@@ -2,13 +2,10 @@ import React from 'react';
 
 function Footer() {
   return (
-    <footer className="flex flex-col sm:flex-row items-center sm:justify-between w-full bottom-0 p-4 mt-5 bg-gray-100 shadow dark:bg-gray-400 text-black dark:text-white">
+    <footer className="absolute h-[50px] bottom-0 flex flex-col sm:flex-row items-center sm:justify-between w-full  p-4 shadow bg-catalina-blue-500 dark:bg-catalina-blue-600 text-white">
       <span className="text-sm  sm:text-center ">
         © 2022{' '}
-        <a
-          href="https://www.linkedin.com/in/mahmoudkhudairi/"
-          className="text-catalina-blue-500  hover:underline"
-        >
+        <a href="https://www.linkedin.com/in/mahmoudkhudairi/" className="font-bold underline">
           Mahmoud Khudairi
         </a>{' '}
         All Rights Reserved.

@@ -12,13 +12,14 @@ import NotFound from './NotFound';
 import Spinner from '../components/Spinner';
 import { useBooksContext } from '../context/';
 import ErrorAlert from './ErrorAlert';
+import AdminDashboard from './AdminDashboard';
 function Main() {
   const {
     state: { loading, error },
   } = useBooksContext();
 
   return (
-    <div className="min-h-screen">
+    <div className="pb-[70px]">
       {error && <ErrorAlert message={error} />}
       {loading && <Spinner />}
       <Routes>
@@ -33,6 +34,9 @@ function Main() {
           <Route path="" element={<Feed />} />
           <Route path=":id" element={<BookDetails />} />
           <Route path=":id/edit/" element={<UpdateBook />} />
+        </Route>
+        <Route path="/admin" element={<ProtectedRoute />}>
+          <Route path="dashboard" element={<AdminDashboard />} />
         </Route>
         <Route path="*" element={<NotFound />} />
       </Routes>
