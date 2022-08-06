@@ -7,8 +7,6 @@ import placeholderSrc from '../images/placeholder.png';
 const Book = ({ book, isFeed }) => {
   const { _id, title, imageUrl, createdBy } = book;
   const { state, dispatch } = useBooksContext();
-  //grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-1/3 lg:grid-cols-4 xl:grid-cols-5
-  //w-[320px] min-h-[475px]
   return (
     <div
       key={_id}
