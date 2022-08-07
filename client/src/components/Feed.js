@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import Book from './Book';
 import Placeholder from './Placeholder';
 import { useBooksContext } from '../context';
@@ -7,11 +7,21 @@ const Feed = (props) => {
     state: { books, loading },
     getBooks,
   } = useBooksContext();
-
+  const [page, setPage] = useState(0);
   useEffect(() => {
-    getBooks();
-  }, []);
+    getBooks(page);
+  }, [page]);
 
+  window.onscroll = function () {
+    // check if the page has scrolled to the bottom
+    if (
+      window.innerHeight + document.documentElement.scrollTop ===
+      document.documentElement.offsetHeight
+    ) {
+      console.log('BRING MORE!!!');
+      setPage(page + 1);
+    }
+  };
   return (
     <>
       {books && (

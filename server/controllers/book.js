@@ -33,8 +33,15 @@ const getPublicBooks = async (req, res, next) => {
   }
 };
 const getBooks = async (req, res, next) => {
+  const page = Number(req.query.page) || 0;
+  const booksPerPage = 10;
+  //due to MongoDB 4.4 known bug with sorting adding _id resolve duplicate of noneUnique values on sorting
   try {
-    const books = await Book.find({ status: 'APPROVED' }).populate('createdBy', '_id name email');
+    const books = await Book.find({ status: 'APPROVED' })
+      .sort({ createdAt: -1, _id: -1 })
+      .skip(page * booksPerPage)
+      .limit(booksPerPage)
+      .populate('createdBy', '_id name email');
     res.json(books);
   } catch (err) {
     next(new ErrorResponse(err.message));
@@ -93,9 +100,10 @@ const updateBook = async (req, res, next) => {
 const getDashboardData = async (req, res, next) => {
   const page = Number(req.query.page) || 0;
   const booksPerPage = Number(req.query.booksPerPage) || 10;
+  //due to MongoDB 4.4 known bug with sorting adding _id resolve duplicate of noneUnique values on sorting
   try {
     const books = await Book.find({})
-      .sort({ status: -1, createdAt: -1 })
+      .sort({ status: -1, createdAt: -1, _id: -1 })
       .skip(page * booksPerPage)
       .limit(booksPerPage)
       .populate('createdBy', '_id name email');

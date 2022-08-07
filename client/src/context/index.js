@@ -151,13 +151,14 @@ function ContextProvider({ children }) {
           });
       });
     },
-    getBooks: () => {
+    getBooks: (page) => {
       dispatch({ type: 'LOADING_START' });
       axios
-        .get('/api/books')
+        .get(`/api/books?page=${page}`)
         .then((res) => {
           dispatch({ type: 'LOADING_END' });
-          dispatch({ type: 'GET_BOOKS', payload: { books: res.data } });
+          console.log([...state.books, ...res.data]);
+          dispatch({ type: 'GET_BOOKS', payload: { books: [...state.books, ...res.data] } });
         })
         .catch((err) => {
           dispatch({ type: 'LOADING_END' });
