@@ -1,16 +1,27 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { NavLink, Link, useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBars } from '@fortawesome/free-solid-svg-icons';
 import Avatar from 'react-avatar';
-import { useBooksContext } from '../context';
+import { logout } from '../redux/actions/user';
+
+import { useDispatch, useSelector } from 'react-redux';
 import ThemeSwitcher from './ThemeSwitcher';
+import { getLoggedInUser } from '../redux/actions/user';
 function Header() {
   const navigate = useNavigate();
-  const { state, logout } = useBooksContext();
+  const dispatch = useDispatch();
+  const state = useSelector(state => {
+    return state.user;
+  });
+  useEffect(() => {
+    dispatch(getLoggedInUser());
+  }, []);
+
   const [navbarOpen, setNavbarOpen] = useState(false);
   const handleLogout = () => {
-    logout().then(() => navigate('/'));
+    dispatch(logout());
+    navigate('/');
   };
   const activeLinkClass =
     'px-3 py-2 flex items-center text-xs uppercase font-bold leading-snug relative after:absolute after:w-[70%] after:rounded-lg after:h-[4px] after:bottom-[-10%] after:left-[15%] after:content-[""] after:bg-white';
@@ -47,7 +58,7 @@ function Header() {
                   Public Books
                 </NavLink>
               </li>
-              {state.user !== 'not-loggedin' && (
+              {state.user && (
                 <>
                   <li className="nav-item">
                     <NavLink
@@ -73,7 +84,21 @@ function Header() {
               </li>
 
               <li className="nav-item">
-                {state.user === 'not-loggedin' ? (
+                {state.user ? (
+                  <div className="flex flex-col md:flex-row list-none md:ml-auto">
+                    <Avatar
+                      name={state?.user?.name}
+                      round={true}
+                      size={35}
+                      src=""
+                      className=" mx-1 text-xs font-bold leading-snug hover:cursor-pointer hover:opacity-75  mt-1 sm:mt-0 text-catalina-blue-100"
+                      onClick={() => navigate(`/profile/${state?.user?.name.replace(/\s+/g, '-')}`)}
+                    />
+                    <button className={linkClass} onClick={handleLogout}>
+                      Logout
+                    </button>
+                  </div>
+                ) : (
                   <div className="flex flex-col md:flex-row list-none md:ml-auto">
                     <NavLink
                       className={({ isActive }) => (isActive ? activeLinkClass : linkClass)}
@@ -88,20 +113,6 @@ function Header() {
                     >
                       Register
                     </NavLink>
-                  </div>
-                ) : (
-                  <div className="flex flex-col md:flex-row list-none md:ml-auto">
-                    <Avatar
-                      name={state.user.name}
-                      round={true}
-                      size={35}
-                      src=""
-                      className=" mx-1 text-xs font-bold leading-snug hover:cursor-pointer hover:opacity-75  mt-1 sm:mt-0 text-catalina-blue-100"
-                      onClick={() => navigate(`/profile/${state.user.name.replace(/\s+/g, '-')}`)}
-                    />
-                    <button className={linkClass} onClick={handleLogout}>
-                      Logout
-                    </button>
                   </div>
                 )}
               </li>

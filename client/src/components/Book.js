@@ -1,18 +1,20 @@
 import { Link } from 'react-router-dom';
 import ProgressiveImg from './ProgressiveImg';
-import { useBooksContext } from '../context';
+import { useSelector } from 'react-redux';
 import AddToFav from './AddToFav';
 import DeleteBook from './DeleteBook';
 import placeholderSrc from '../images/placeholder.png';
 const Book = ({ book, isFeed }) => {
   const { _id, title, imageUrl, createdBy } = book;
-  const { state, dispatch } = useBooksContext();
+  const state = useSelector(state => {
+    return state.user;
+  });
   return (
     <div
       key={_id}
       className="rounded-lg shadow-xl bg-gray-200 dark:bg-slate-600 p-8 text-center dark:text-white text-black relative"
     >
-      <h2 className="font-bold text-lg capitalize">{title}</h2>
+      <h2 className="font-bold text-lg capitalize break-words pt-4">{title}</h2>
       {isFeed && <AddToFav _id={_id} book={book} user={state.user} />}
       <ProgressiveImg src={imageUrl} placeholderSrc={placeholderSrc} />
       <p>
@@ -56,7 +58,7 @@ const Book = ({ book, isFeed }) => {
           >
             Edit
           </Link>
-          <DeleteBook _id={_id} dispatch={dispatch} />
+          <DeleteBook _id={_id} />
         </>
       )}
     </div>

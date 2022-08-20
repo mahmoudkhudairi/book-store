@@ -1,27 +1,34 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { useBooksContext } from '../context';
+import { login } from '../redux/actions/user';
+import { useDispatch, useSelector } from 'react-redux';
 function Login() {
-  const { login } = useBooksContext();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
   const { state: locationState } = useLocation();
   const destination = locationState ? locationState.destination : '/';
-  const handleSubmit = (event) => {
+  const dispatch = useDispatch();
+  const state = useSelector(state => {
+    return state.user;
+  });
+  const handleSubmit = event => {
     event.preventDefault();
     const user = {
       email: email,
       password: password,
     };
-    login(user).then((role) => {
-      if (role === 'ADMIN') {
+    dispatch(login(user));
+  };
+  useEffect(() => {
+    if (state.user) {
+      if (state.user.role === 'ADMIN') {
         navigate('/admin/dashboard', { replace: true });
       } else {
         navigate(destination, { replace: true });
       }
-    });
-  };
+    }
+  }, [state.user]);
 
   return (
     <form className="container mx-auto px-10 max-w-md" onSubmit={handleSubmit}>
@@ -37,7 +44,7 @@ function Login() {
           name="email"
           id="email"
           value={email}
-          onChange={(e) => setEmail(e.target.value)}
+          onChange={e => setEmail(e.target.value)}
           className="border border-gray-300  text-sm rounded-lg focus:ring-catalina-blue-600 focus:border-catalina-blue-600 block w-full p-2.5 "
           placeholder="name@domain.com"
           required
@@ -54,10 +61,10 @@ function Login() {
           type="password"
           name="password"
           value={password}
-          onChange={(e) => setPassword(e.target.value)}
+          onChange={e => setPassword(e.target.value)}
           id="password"
           placeholder="password"
-          className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-catalina-blue-600 focus:border-catalina-blue-600 block w-full p-2.5 "
+          className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-catalina-blue-600 focus:border-catalina-blue-600 block w-full p-2.5"
           required
         />
       </div>

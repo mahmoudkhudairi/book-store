@@ -1,23 +1,23 @@
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useBooksContext } from '../../context';
+import { useSelector } from 'react-redux';
 import Table from './Table';
 
 const AdminDashboard = () => {
-  const {
-    state: { user, error },
-  } = useBooksContext();
+  const state = useSelector(state => {
+    return state.user;
+  });
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (user && user.role !== 'ADMIN') {
+    if (state.user && state.user.role !== 'ADMIN') {
       navigate('/');
     }
-  }, [user]);
+  }, [state.user]);
 
   return (
     <>
-      <div className="container mx-auto">{!error && <Table />}</div>
+      <div className="container mx-auto">{!state.error && <Table />}</div>
     </>
   );
 };

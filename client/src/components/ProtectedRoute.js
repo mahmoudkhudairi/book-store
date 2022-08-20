@@ -1,31 +1,17 @@
-import { useEffect, useState } from 'react';
-import { useBooksContext } from '../context';
 import { Navigate, Outlet, useLocation } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 const ProtectedRoute = () => {
   let location = useLocation();
-  const [isAuthorized, setIsAuthorized] = useState(false);
-  const {
-    state: { user },
-  } = useBooksContext();
-  useEffect(() => {
-    if (user !== 'pre-fetch') {
-      setIsAuthorized(true);
+  const state = useSelector(state => {
+    return state.user;
+  });
+  if (state.user !== 'pending') {
+    if (state.user) {
+      return <Outlet />;
+    } else {
+      return <Navigate to="/login" state={{ destination: location }} />;
     }
-  }, [user]);
-
-  return (
-    <>
-      {isAuthorized && (
-        <>
-          {user !== 'not-loggedin' ? (
-            <Outlet />
-          ) : (
-            <Navigate to="/login" state={{ destination: location }} />
-          )}
-        </>
-      )}
-    </>
-  );
+  }
 };
 
 export default ProtectedRoute;

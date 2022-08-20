@@ -1,11 +1,14 @@
 import React from 'react';
-import { useBooksContext } from '../context';
+import { deleteBook } from '../redux/actions/book';
+import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 const DeleteBook = ({ _id, isDetails }) => {
   const navigate = useNavigate();
-  const { deleteBook } = useBooksContext();
-  const handleClick = () => {
-    deleteBook(_id).then(() => isDetails && navigate('/books'));
+  const dispatch = useDispatch();
+  const state = useSelector(state => state.books);
+  const handleClick = async () => {
+    await dispatch(deleteBook(_id));
+    !state.error && isDetails && navigate('/books');
   };
 
   return (

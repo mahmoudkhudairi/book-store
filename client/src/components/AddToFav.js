@@ -1,14 +1,15 @@
 import { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHeart } from '@fortawesome/free-solid-svg-icons';
-import { useBooksContext } from '../context';
+import { useDispatch } from 'react-redux';
+import { addBookToFav } from '../redux/actions/book';
 const AddToFav = ({ _id, user }) => {
   const [addToFav, setAddToFav] = useState(false);
-  const { addBookToFav } = useBooksContext();
+  const dispatch = useDispatch();
   const handleFav = () => {
-    setAddToFav((previousState) => {
+    setAddToFav(previousState => {
       const newState = !previousState;
-      addBookToFav(_id, newState);
+      dispatch(addBookToFav({ _id, addToFav: newState }));
       return newState;
     });
   };

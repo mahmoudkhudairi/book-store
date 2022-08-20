@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAdd, faMinus } from '@fortawesome/free-solid-svg-icons';
-import { useBooksContext } from '../context';
+import { addBook, updateBook } from '../redux/actions/book';
+import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 function Form(props) {
   const navigate = useNavigate();
   const [authorInputList, setAuthorInputList] = useState(['']);
+  const [isFormSubmitted, setIsFormSubmitted] = useState(false);
   const [book, setBook] = useState({
     title: '',
     authors: [],
@@ -14,7 +16,10 @@ function Form(props) {
     description: '',
     imageUrl: '',
   });
-  const { addBook, updateBook } = useBooksContext();
+  const dispatch = useDispatch();
+  const state = useSelector(state => {
+    return state.books;
+  });
   useEffect(() => {
     if (!!props.oldBook) {
       setBook(props.oldBook);
@@ -22,26 +27,21 @@ function Form(props) {
     }
   }, [props.oldBook]);
 
+  useEffect(() => {
+    state.error && setErrors(state.error?.errors);
+  }, [state.error]);
+
   const [errors, setErrors] = useState({});
-  const submitHandler = (e) => {
+  const submitHandler = async e => {
     e.preventDefault();
+    setIsFormSubmitted(!isFormSubmitted);
     if (props.isAdd) {
-      addBook(book)
-        .then(() => {
-          alert(
-            "Your book is added successfully and it will be displayed once it's approved by Admin",
-          );
-          navigate('/books');
-        })
-        .catch((error) => {
-          setErrors(error);
-        });
+      dispatch(addBook(book));
+      alert("Your book is added successfully and it will be displayed once it's approved by Admin");
+      navigate('/books');
     } else {
-      updateBook(book)
-        .then(() => navigate('/books'))
-        .catch((error) => {
-          setErrors(error);
-        });
+      dispatch(updateBook(book));
+      navigate('/books');
     }
   };
   const handleAuthorsInputChange = (e, index) => {
@@ -51,7 +51,7 @@ function Form(props) {
     setAuthorInputList(list);
     setBook({ ...book, authors: list });
   };
-  const changeHandler = (e) => {
+  const changeHandler = e => {
     if (e.target.name === 'image') {
       const file = e.target.files[0];
       const reader = new FileReader();
@@ -64,7 +64,7 @@ function Form(props) {
       setBook({ ...book, [e.target.name]: e.target.value });
     }
   };
-  const handleRemoveClick = (index) => {
+  const handleRemoveClick = index => {
     const list = [...authorInputList];
     list.splice(index, 1);
     setAuthorInputList(list);
@@ -109,6 +109,7 @@ function Form(props) {
           className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-200 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
           placeholder=" "
           required
+          minLength={20}
         />
 
         <label
@@ -136,7 +137,7 @@ function Form(props) {
                 placeholder=" "
                 value={author}
                 required
-                onChange={(e) => handleAuthorsInputChange(e, i)}
+                onChange={e => handleAuthorsInputChange(e, i)}
               />
               <div className="relative flex gap-2 justify-end mt-1">
                 {authorInputList.length !== 1 && (
