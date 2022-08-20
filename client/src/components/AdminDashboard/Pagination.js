@@ -1,10 +1,11 @@
 import { useRef, useState, useEffect } from 'react';
-import { useBooksContext } from '../../context';
+import { getAdminDashboard } from '../../redux/actions/admin';
+import { useDispatch, useSelector } from 'react-redux';
 const Pagination = () => {
-  const {
-    state: { dashboardData },
-    getAdminDashboard,
-  } = useBooksContext();
+  const dispatch = useDispatch();
+  const state = useSelector(state => {
+    return state.admin;
+  });
 
   let [pages, setPages] = useState(0);
   let [currentPage, setCurrentPage] = useState(0);
@@ -13,22 +14,22 @@ const Pagination = () => {
   const [showingTo, setShowingTo] = useState(booksPerPage);
   const prevBooksPerPageRef = useRef();
   useEffect(() => {
-    if (dashboardData?.booksCount) {
-      setPages(Math.ceil(dashboardData.booksCount / booksPerPage));
+    if (state.dashboardData?.booksCount) {
+      setPages(Math.ceil(state.dashboardData.booksCount / booksPerPage));
       handlePageClick(currentPage);
     }
-  }, [dashboardData]);
+  }, [state.dashboardData]);
   useEffect(() => {
     if (prevBooksPerPageRef.current !== booksPerPage) {
-      getAdminDashboard(0, booksPerPage);
+      dispatch(getAdminDashboard({ page: 0, booksPerPage }));
       setCurrentPage(0);
       prevBooksPerPageRef.current = booksPerPage;
     } else {
-      getAdminDashboard(currentPage, booksPerPage);
+      dispatch(getAdminDashboard({ page: currentPage, booksPerPage }));
     }
   }, [currentPage, booksPerPage]);
 
-  const handlePageClick = (i) => {
+  const handlePageClick = i => {
     if (currentPage > i) {
       setShowingTo(() => {
         const newTo = (i + 1) * booksPerPage;
@@ -38,7 +39,9 @@ const Pagination = () => {
     } else {
       setShowingFrom(() => {
         const newTo = (i + 1) * booksPerPage;
-        setShowingTo(newTo > dashboardData.booksCount ? dashboardData.booksCount : newTo);
+        setShowingTo(
+          newTo > state.dashboardData.booksCount ? state.dashboardData.booksCount : newTo,
+        );
         return newTo + 1 - booksPerPage;
       });
     }
@@ -48,7 +51,7 @@ const Pagination = () => {
     if (currentPage < pages - 1) {
       setShowingFrom(showingTo + 1);
       const newTo = showingTo + booksPerPage;
-      setShowingTo(newTo > dashboardData.booksCount ? dashboardData.booksCount : newTo);
+      setShowingTo(newTo > state.dashboardData.booksCount ? state.dashboardData.booksCount : newTo);
       setCurrentPage(currentPage + 1);
     }
   };
@@ -59,7 +62,7 @@ const Pagination = () => {
       setCurrentPage(currentPage - 1);
     }
   };
-  if (dashboardData) {
+  if (state.dashboardData) {
     return (
       <nav className="flex justify-between items-center pt-2" aria-label="Table navigation">
         <span className="text-sm font-normal text-gray-900 dark:text-gray-200">
@@ -70,7 +73,7 @@ const Pagination = () => {
           </span>
           of{' '}
           <span className="font-semibold text-gray-900 dark:text-white">
-            {dashboardData?.booksCount}
+            {state.dashboardData?.booksCount}
           </span>
         </span>
         <div>
@@ -79,7 +82,7 @@ const Pagination = () => {
             className="py-2 px-3 leading-tight text-catalina-blue-600 bg-catalina-blue-100 border border-catalina-blue-300 hover:bg-blue-100 hover:text-catalina-blue-700 dark:border-gray-700 dark:bg-gray-700 dark:text-white"
             name="booksPerPage"
             defaultValue={booksPerPage}
-            onChange={(e) => setBooksPerPage(e.target.value)}
+            onChange={e => setBooksPerPage(e.target.value)}
           >
             <option value="10">10</option>
             <option value="20">20</option>

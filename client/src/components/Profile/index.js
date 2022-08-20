@@ -1,18 +1,24 @@
 import { useEffect, useState } from 'react';
-import { useBooksContext } from '../../context';
+import { getProfile } from '../../redux/actions/user';
+import { useDispatch, useSelector } from 'react-redux';
 import UserInfo from './UserInfo';
 import Book from '../Book';
-import { useParams, Link } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import Placeholder from '../Placeholder';
 function Profile() {
   const { username } = useParams();
-  const { getProfile } = useBooksContext();
   const [userInfo, setUserInfo] = useState(null);
+  const dispatch = useDispatch();
+  const state = useSelector(state => {
+    return state.user;
+  });
   useEffect(() => {
-    getProfile(username).then((data) => {
-      setUserInfo(data);
-    });
+    dispatch(getProfile(username));
   }, []);
+  useEffect(() => {
+    setUserInfo(state.profile);
+  }, [state.profile]);
+
   if (userInfo) {
     return (
       <>
@@ -22,7 +28,7 @@ function Profile() {
             <h2 className="mb-8 font-bold">Added Books</h2>
             <div className="flex flex-col items-center justify-center md:flex-row gap-8 md:flex-wrap">
               {userInfo.books.length > 0 ? (
-                userInfo.books.map((book) => <Book book={book} key={book._id} />)
+                userInfo.books.map(book => <Book book={book} key={book._id} />)
               ) : (
                 <Placeholder
                   text="No books added yet :("
@@ -37,7 +43,7 @@ function Profile() {
             <h2 className="mb-8 font-bold">Favorite Books</h2>
             <div className="flex flex-col items-center justify-center md:flex-row gap-8 md:flex-wrap">
               {userInfo.favoriteBooks.length > 0 ? (
-                userInfo.favoriteBooks.map((book) => <Book book={book} key={book._id} />)
+                userInfo.favoriteBooks.map(book => <Book book={book} key={book._id} />)
               ) : (
                 <Placeholder
                   text="No books added to the Favorite yet :("

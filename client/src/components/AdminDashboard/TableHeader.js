@@ -1,6 +1,9 @@
-import React from 'react';
+import { useSelector } from 'react-redux';
 
-const TableHeader = ({ dashboardData }) => {
+const TableHeader = () => {
+  const state = useSelector(state => {
+    return state.admin;
+  });
   const columns = [
     'title',
     'authors',
@@ -12,11 +15,11 @@ const TableHeader = ({ dashboardData }) => {
     'createdAt',
     'updatedAt',
   ];
-  if (dashboardData) {
+  if (state.dashboardData) {
     return (
       <thead className="bg-gray-200 dark:bg-gray-700 sticky top-0">
         <tr>
-          {columns.map((column) => (
+          {columns.map(column => (
             <th
               key={column}
               scope="col"

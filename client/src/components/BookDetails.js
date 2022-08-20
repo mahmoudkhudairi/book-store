@@ -1,26 +1,36 @@
 import { useEffect, useState } from 'react';
 import { useParams, Link, useLocation } from 'react-router-dom';
-import { useBooksContext } from '../context';
+import { getBookById, setCurrentBook } from '../redux/actions/book';
+import { useDispatch, useSelector } from 'react-redux';
 import AddToFav from './AddToFav';
 import DeleteBook from './DeleteBook';
 function BookDetails() {
-  const { state, getBookById } = useBooksContext();
+  const dispatch = useDispatch();
+  const state = useSelector(state => state);
   const [book, setBook] = useState(null);
   const { state: locationState } = useLocation();
   const { id } = useParams();
   useEffect(() => {
-    if (locationState?.isPublicBook) {
-      const book = state.publicBooks.find((book) => book._id === id);
-      setBook(book);
+    if (locationState?.isPublicBook || id.length < 15) {
+      const currentBook = state.books.publicBooks.find(book => book._id === id);
+      setBook(currentBook);
     } else {
-      const book = state.books.find((book) => book._id === id);
-      if (state.books && book) {
-        setBook(book);
+      const currentBook = state.books.allBooks.find(book => book._id === id);
+      if (state.books.allBooks && currentBook) {
+        console.log('HELLO PRIVATE', currentBook);
+        setBook(currentBook);
       } else {
-        getBookById(id).then((book) => setBook(book));
+        console.log('OH NO IT IS NOT HERE LETS BRING IT ON');
+        dispatch(getBookById(id));
       }
     }
+    return () => dispatch(setCurrentBook(null));
   }, []);
+
+  useEffect(() => {
+    console.log('WHAT IS THIS >>>', book, state.books.currentBook);
+    state.books.currentBook && setBook(state.books.currentBook);
+  }, [state.books.currentBook]);
 
   if (book) {
     return (

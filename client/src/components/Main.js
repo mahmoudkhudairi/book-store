@@ -10,18 +10,16 @@ import UpdateBook from './UpdateBook';
 import ProtectedRoute from './ProtectedRoute';
 import NotFound from './NotFound';
 import Spinner from '../components/Spinner';
-import { useBooksContext } from '../context/';
+import { useSelector } from 'react-redux';
 import ErrorAlert from './ErrorAlert';
 import AdminDashboard from './AdminDashboard';
 function Main() {
-  const {
-    state: { loading, error },
-  } = useBooksContext();
-
+  const state = useSelector(state => state);
   return (
     <div className="pb-[70px]">
-      {error && <ErrorAlert message={error} />}
-      {loading && <Spinner />}
+      {state.user.error && <ErrorAlert error={state.user.error} />}
+      {state.books.error && <ErrorAlert error={state.books.error} />}
+      {(state.user.loading || state.books.loading) && <Spinner />}
       <Routes>
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />

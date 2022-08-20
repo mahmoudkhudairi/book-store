@@ -1,17 +1,20 @@
 import { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPen, faCamera } from '@fortawesome/free-solid-svg-icons';
-import { useBooksContext } from '../../context';
+import { updateProfile } from '../../redux/actions/user';
+import { useDispatch, useSelector } from 'react-redux';
 import Avatar from 'react-avatar';
-const UserInfo = (props) => {
-  const { updateProfile } = useBooksContext();
+const UserInfo = props => {
+  const dispatch = useDispatch();
+  const state = useSelector(state => {
+    return state.user;
+  });
   const [userInfo, setUserInfo] = useState(props.userInfo);
   const [shouldEdit, setShouldEdit] = useState(false);
-  const [shouldSpin, setShouldSpin] = useState(false);
   const handleClick = () => {
     setShouldEdit(!shouldEdit);
   };
-  const handleChange = (e) => {
+  const handleChange = e => {
     if (e.target.name === 'image') {
       const file = e.target.files[0];
       const reader = new FileReader();
@@ -25,16 +28,13 @@ const UserInfo = (props) => {
     }
   };
   const handleUpdate = () => {
-    setShouldSpin(true);
     const newInfo = {
       profilePicture: userInfo.profilePicture,
       name: userInfo.name,
       about: userInfo.about,
     };
-    updateProfile(props.username, newInfo).then(() => {
-      setShouldSpin(false);
-      setShouldEdit(!shouldEdit);
-    });
+    dispatch(updateProfile({ username: props.username, userInfo: newInfo }));
+    setShouldEdit(!shouldEdit);
   };
   return (
     <div className="max-w-[80%] my-16 mx-auto rounded-lg shadow-xl bg-catalina-blue-500 dark:bg-slate-800 p-8 text-center text-white relative">
@@ -76,9 +76,9 @@ const UserInfo = (props) => {
           <button
             className="ml-4 mt-3 rounded-lg px-2 py-1 bg-catalina-blue-500  text-white hover:bg-catalina-blue-600 duration-300 inline-flex justify-center items-center"
             onClick={handleUpdate}
-            disabled={shouldSpin}
+            disabled={state.loading}
           >
-            {shouldSpin && (
+            {state.loading && (
               <svg
                 role="status"
                 className="inline mr-3 w-4 h-4 text-white animate-spin"

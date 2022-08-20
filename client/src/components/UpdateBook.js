@@ -1,17 +1,23 @@
 import { useEffect, useState } from 'react';
 import { useLocation, useParams } from 'react-router-dom';
 import Form from './Form';
-import { useBooksContext } from '../context';
+import { getBookById } from '../redux/actions/book';
+import { useDispatch, useSelector } from 'react-redux';
 function UpdateBook() {
   const [oldBook, setOldBook] = useState(null);
   const { id } = useParams();
-  const { state } = useLocation();
-  const { getBookById } = useBooksContext();
+  const { state: locationState } = useLocation();
+  const dispatch = useDispatch();
+  const state = useSelector(state => state.books);
   useEffect(() => {
-    if (!state) {
-      getBookById(id).then((book) => setOldBook(book));
+    setOldBook(state.currentBook);
+  }, [state.currentBook]);
+
+  useEffect(() => {
+    if (!locationState) {
+      dispatch(getBookById(id));
     } else {
-      setOldBook(state);
+      setOldBook(locationState);
     }
   }, []);
 

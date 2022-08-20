@@ -1,10 +1,13 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useBooksContext } from '../context';
+import { register } from '../redux/actions/user';
+import { useDispatch, useSelector } from 'react-redux';
 function Register() {
   const navigate = useNavigate();
-  const { register } = useBooksContext();
-  const [errors, setErrors] = useState({});
+  const dispatch = useDispatch();
+  const state = useSelector(state => {
+    return state.user;
+  });
   const [user, setUser] = useState({
     name: '',
     email: '',
@@ -12,20 +15,22 @@ function Register() {
     confirmPassword: '',
   });
 
-  const handleChange = (e) => {
+  const handleChange = e => {
     setUser({
       ...user,
       [e.target.name]: e.target.value,
     });
   };
 
-  const handleSubmit = (e) => {
+  useEffect(() => {
+    if (state.user) {
+      navigate('/');
+    }
+  }, [state.user]);
+
+  const handleSubmit = e => {
     e.preventDefault();
-    register(user)
-      .then(() => navigate('/'))
-      .catch((err) => {
-        setErrors(err);
-      });
+    dispatch(register(user));
   };
 
   return (
@@ -47,8 +52,10 @@ function Register() {
           placeholder="John Doe"
           required
         />
-        {errors.name && (
-          <span className="mt-2 text-red-600 dark:text-red-400 block">{errors.name.message}</span>
+        {state.error?.errors?.name && (
+          <span className="mt-2 text-red-600 dark:text-red-400 block">
+            {state.error?.errors?.name.message}
+          </span>
         )}
       </div>
       <div className="mb-6">
@@ -64,12 +71,14 @@ function Register() {
           id="email"
           value={user.email}
           onChange={handleChange}
-          className="border border-gray-300  text-sm rounded-lg focus:ring-catalina-blue-500 focus:border-catalina-blue-500 block w-full p-2.5 "
+          className="border border-gray-300  text-sm rounded-lg focus:ring-catalina-blue-500 focus:border-catalina-blue-500 block w-full p-2.5"
           placeholder="john@domain.com"
           required
         />
-        {errors.email && (
-          <span className="mt-2 text-red-600 dark:text-red-400 block">{errors.email.message}</span>
+        {state.error?.errors?.email && (
+          <span className="mt-2 text-red-600 dark:text-red-400 block">
+            {state.error?.errors?.email.message}
+          </span>
         )}
       </div>
       <div className="mb-6">
@@ -87,12 +96,12 @@ function Register() {
           value={user.password}
           onChange={handleChange}
           placeholder="password"
-          className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-catalina-blue-500 focus:border-catalina-blue-500 block w-full p-2.5 "
+          className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-catalina-blue-500 focus:border-catalina-blue-500 block w-full p-2.5"
           required
         />
-        {errors.password && (
+        {state.error?.errors?.password && (
           <span className="mt-2 text-red-600 dark:text-red-400 block">
-            {errors.password.message}
+            {state.error?.errors?.password.message}
           </span>
         )}
       </div>
@@ -110,18 +119,18 @@ function Register() {
           value={user.confirmPassword}
           onChange={handleChange}
           placeholder="password"
-          className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-catalina-blue-500 focus:border-catalina-blue-500 block w-full p-2.5 "
+          className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-catalina-blue-500 focus:border-catalina-blue-500 block w-full p-2.5"
           required
         />
-        {errors.confirmPassword && (
+        {state.error?.errors?.confirmPassword && (
           <span className="mt-2 text-red-600 dark:text-red-400 block">
-            {errors.confirmPassword.message}
+            {state.error?.errors?.confirmPassword.message}
           </span>
         )}
       </div>
       <button
         type="submit"
-        className="text-white bg-catalina-blue-500 hover:bg-catalina-blue-500 focus:ring-4 focus:outline-none focus:ring-catalina-blue-500 font-medium rounded-full text-sm w-full  px-5 py-2.5 text-center "
+        className="text-white bg-catalina-blue-500 hover:bg-catalina-blue-500 focus:ring-4 focus:outline-none focus:ring-catalina-blue-500 font-medium rounded-full text-sm w-full  px-5 py-2.5 text-center"
       >
         Register
       </button>
