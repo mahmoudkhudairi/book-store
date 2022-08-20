@@ -68,7 +68,7 @@ const getBookById = async (req, res, next) => {
       .populate('createdBy', '_id name email');
     res.json(book);
   } catch (err) {
-    next(new ErrorResponse(err.message));
+    next(new ErrorResponse(`cannot find book with id ${id}`));
   }
 };
 
