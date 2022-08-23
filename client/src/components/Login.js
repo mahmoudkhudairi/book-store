@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate, useLocation, Link } from 'react-router-dom';
 import { login } from '../redux/actions/user';
 import { useDispatch, useSelector } from 'react-redux';
 function Login() {
@@ -66,6 +66,7 @@ function Login() {
           placeholder="password"
           className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-catalina-blue-600 focus:border-catalina-blue-600 block w-full p-2.5"
           required
+          autoComplete="on"
         />
       </div>
       <button
@@ -74,6 +75,12 @@ function Login() {
       >
         Login
       </button>
+      <span className="block text-center mt-6 mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">
+        Don't have an Account?{' '}
+        <Link to="/register" className="text-catalina-blue-500 dark:text-catalina-blue-400">
+          Register Now!
+        </Link>
+      </span>
     </form>
   );
 }
