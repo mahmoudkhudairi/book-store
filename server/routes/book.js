@@ -13,5 +13,9 @@ const {
 router.route('/public').get(getPublicBooks);
 router.use(authenticate);
 router.route('/').get(getBooks).post(createBook);
-router.route('/:id').get(getBookById).put(acl, updateBook).delete(acl, deleteBook);
+router
+  .route('/:id')
+  .get(getBookById)
+  .put(acl({ isComment: false }), updateBook)
+  .delete(acl({ isComment: false }), deleteBook);
 module.exports = router;

@@ -4,6 +4,7 @@ const cors = require('cors');
 const cookieParser = require('cookie-parser');
 const dbConnection = require('./configs/mongoose.configs');
 const booksRoutes = require('./routes/book');
+const commentsRoutes = require('./routes/comment');
 const usersRoutes = require('./routes/user');
 const authRoutes = require('./routes/auth');
 const adminRoutes = require('./routes/admin');
@@ -18,6 +19,7 @@ app.use(express.static(path.resolve(__dirname, 'client', 'build')));
 app.use(cookieParser());
 app.use(morgan('dev'));
 app.use('/api/books', booksRoutes);
+app.use('/api/books', commentsRoutes);
 app.use('/api/users', usersRoutes);
 app.use('/api/admin', adminRoutes);
 app.use(authRoutes);
@@ -29,6 +31,6 @@ dbConnection
   .then(() => {
     app.listen(PORT, () => console.log(`Server is running on port ${PORT}`));
   })
-  .catch((err) => {
+  .catch(err => {
     console.log(`db connection error`, err);
   });
