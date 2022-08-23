@@ -16,7 +16,7 @@ import AdminDashboard from './AdminDashboard';
 function Main() {
   const state = useSelector(state => state);
   return (
-    <div className="pb-[70px]">
+    <div className="pb-[110px]">
       {state.user.error && <ErrorAlert error={state.user.error} />}
       {state.books.error && <ErrorAlert error={state.books.error} />}
       {(state.user.loading || state.books.loading) && <Spinner />}
