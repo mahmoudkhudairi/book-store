@@ -21,12 +21,13 @@ function Header() {
   const [navbarOpen, setNavbarOpen] = useState(false);
   const handleLogout = () => {
     dispatch(logout());
+    navbarOpen && setNavbarOpen(!navbarOpen);
     navigate('/');
   };
   const activeLinkClass =
-    'px-3 py-2 flex items-center text-xs uppercase font-bold leading-snug relative after:absolute after:w-[70%] after:rounded-lg after:h-[4px] after:bottom-[-10%] after:left-[15%] after:content-[""] after:bg-white';
+    'px-3 py-2 flex self-center text-xs uppercase font-extrabold md:font-bold leading-snug md:relative md:after:absolute md:after:w-[70%] md:after:rounded-lg md:after:h-[4px] md:after:bottom-[-10%] md:after:left-[15%] md:after:content-[""] md:after:bg-white';
   const linkClass =
-    'px-3 py-2 flex items-center text-xs uppercase font-bold leading-snug text-catalina-blue-100 hover:opacity-75';
+    'px-3 py-2 flex self-center text-xs uppercase font-bold leading-snug text-catalina-blue-100 hover:opacity-75';
   return (
     <header className="sticky top-0 z-10 mb-10">
       <nav className="relative flex flex-wrap items-center justify-between px-2 py-3 bg-catalina-blue-500 dark:bg-catalina-blue-600 mb-3 text-white">
@@ -48,30 +49,37 @@ function Header() {
             </button>
           </div>
 
-          <div className={'md:flex flex-grow items-center' + (navbarOpen ? ' flex' : ' hidden')}>
-            <ul className="flex flex-col md:flex-row list-none md:ml-auto">
-              <li className="nav-item">
+          <div
+            className={
+              'md:flex flex-grow items-center justify-center ' + (navbarOpen ? 'flex' : 'hidden')
+            }
+          >
+            <ul className="flex flex-col items-center md:flex-row list-none md:ml-auto">
+              <li>
                 <NavLink
                   className={({ isActive }) => (isActive ? activeLinkClass : linkClass)}
                   to={'/'}
+                  onClick={() => navbarOpen && setNavbarOpen(!navbarOpen)}
                 >
                   Public Books
                 </NavLink>
               </li>
               {state.user && (
                 <>
-                  <li className="nav-item">
+                  <li>
                     <NavLink
                       className={({ isActive }) => (isActive ? activeLinkClass : linkClass)}
                       to={'/books/'}
+                      onClick={() => navbarOpen && setNavbarOpen(!navbarOpen)}
                     >
                       Users Books
                     </NavLink>
                   </li>
-                  <li className="nav-item">
+                  <li>
                     <NavLink
                       className={({ isActive }) => (isActive ? activeLinkClass : linkClass)}
                       to={'/books/new'}
+                      onClick={() => navbarOpen && setNavbarOpen(!navbarOpen)}
                     >
                       Add a New Book
                     </NavLink>
@@ -80,20 +88,39 @@ function Header() {
               )}
 
               <li>
-                <ThemeSwitcher />
+                <div className="md:hidden">
+                  <ThemeSwitcher isPhone={true} />
+                </div>
+                <div className="hidden md:block">
+                  <ThemeSwitcher isPhone={false} />
+                </div>
               </li>
 
-              <li className="nav-item">
+              <li>
                 {state.user ? (
                   <div className="flex flex-col md:flex-row list-none md:ml-auto">
-                    <Avatar
-                      name={state?.user?.name}
-                      round={true}
-                      size={35}
-                      src=""
-                      className=" mx-1 text-xs font-bold leading-snug hover:cursor-pointer hover:opacity-75  mt-1 sm:mt-0 text-catalina-blue-100"
-                      onClick={() => navigate(`/profile/${state?.user?.name.replace(/\s+/g, '-')}`)}
-                    />
+                    <span className="md:hidden">
+                      <NavLink
+                        className={({ isActive }) => (isActive ? activeLinkClass : linkClass)}
+                        to={`/profile/${state.user.name?.replace(/\s+/g, '-')}`}
+                        onClick={() => navbarOpen && setNavbarOpen(!navbarOpen)}
+                      >
+                        Profile
+                      </NavLink>
+                    </span>
+                    <span className="hidden md:block">
+                      <Avatar
+                        name={state?.user?.name}
+                        round={true}
+                        size={35}
+                        src=""
+                        className=" mx-1 text-xs font-bold leading-snug hover:cursor-pointer hover:opacity-75  mt-1 sm:mt-0 text-catalina-blue-100"
+                        onClick={() => {
+                          navigate(`/profile/${state.user.name?.replace(/\s+/g, '-')}`);
+                          navbarOpen && setNavbarOpen(!navbarOpen);
+                        }}
+                      />
+                    </span>
                     <button className={linkClass} onClick={handleLogout}>
                       Logout
                     </button>
@@ -103,12 +130,14 @@ function Header() {
                     <NavLink
                       className={({ isActive }) => (isActive ? activeLinkClass : linkClass)}
                       to={'/login'}
+                      onClick={() => navbarOpen && setNavbarOpen(!navbarOpen)}
                     >
                       Login
                     </NavLink>
                     <span className="text-white text-xs hidden items-center md:flex"> | </span>
                     <NavLink
                       className={({ isActive }) => (isActive ? activeLinkClass : linkClass)}
+                      onClick={() => navbarOpen && setNavbarOpen(!navbarOpen)}
                       to={'/register'}
                     >
                       Register
@@ -116,7 +145,7 @@ function Header() {
                   </div>
                 )}
               </li>
-              <li className="nav-item"></li>
+              <li></li>
             </ul>
           </div>
         </div>
