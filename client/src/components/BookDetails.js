@@ -12,17 +12,13 @@ function BookDetails() {
   const { state: locationState } = useLocation();
   const { id } = useParams();
   useEffect(() => {
-    if (locationState?.isPublicBook || id.length < 15) {
-      const currentBook = state.books.publicBooks.find(book => book._id === id);
+    const currentBook = state.books.allBooks.find(book => book._id === id);
+    if (state.books.allBooks && currentBook) {
       setBook(currentBook);
     } else {
-      const currentBook = state.books.allBooks.find(book => book._id === id);
-      if (state.books.allBooks && currentBook) {
-        setBook(currentBook);
-      } else {
-        dispatch(getBookById(id));
-      }
+      dispatch(getBookById(id));
     }
+
     return () => dispatch(setCurrentBook(null));
   }, []);
 
@@ -35,15 +31,13 @@ function BookDetails() {
       <>
         <div className="dark:bg-slate-700 bg-gray-100 mx-10 sm:w-[50%] sm:mx-auto p-10 rounded-xl dark:text-white relative">
           <h2 className="text-center mb-2">{book.title}</h2>
-          {book.createdBy && (
-            <AddToFav _id={book._id} book={book} user={state.user} isDetails={true} />
-          )}
+          <AddToFav _id={book._id} book={book} user={state.user} isDetails={true} />
           <img src={book.imageUrl} alt="" className="p-1 h-60 mx-auto border rounded-lg my-3" />
           <p>authors: {book.authors && book.authors.join(', ')}</p>
           <p>Publisher: {book.publisher}</p>
           <p>PublishedDate: {book.publishedDate}</p>
           <p className="break-words">Description: {book.description}</p>
-          {book.createdBy && state.user._id === book.createdBy._id && (
+          {state.user._id === book.createdBy._id && (
             <div className="mt-4 flex w-[100%] justify-center gap-4">
               <Link
                 to={`/books/${book._id}/edit`}
@@ -57,7 +51,7 @@ function BookDetails() {
             </div>
           )}
         </div>
-        {book.createdBy && <BookComments bookId={id} />}
+        <BookComments bookId={id} />
       </>
     );
   }

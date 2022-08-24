@@ -13,6 +13,7 @@ import Spinner from '../components/Spinner';
 import { useSelector } from 'react-redux';
 import ErrorAlert from './ErrorAlert';
 import AdminDashboard from './AdminDashboard';
+import PublicBookDetails from './PublicBookDetails';
 function Main() {
   const state = useSelector(state => state);
   return (
@@ -24,6 +25,7 @@ function Main() {
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/" element={<Home />} />
+        <Route path="/public-books/:id" element={<PublicBookDetails />} />
         <Route path="/profile" element={<ProtectedRoute />}>
           <Route path=":username" element={<Profile />} />
         </Route>

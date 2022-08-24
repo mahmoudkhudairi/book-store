@@ -4,8 +4,25 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 export const getPublicBooks = createAsyncThunk(
   'books/public',
   async (payload, { rejectWithValue }) => {
+    console.log('PAYLOAD', payload);
     try {
-      const { data } = await axios.get('/api/books/public');
+      const { data } = await axios.get(`/api/books/public?page=${payload}`);
+
+      return data;
+    } catch (error) {
+      return rejectWithValue({
+        message: error.response.data.message,
+        errors: error.response.data.errors,
+      });
+    }
+  },
+);
+export const getPublicBookById = createAsyncThunk(
+  'books/id/public',
+  async (payload, { rejectWithValue }) => {
+    console.log('PAYLOAD', payload);
+    try {
+      const { data } = await axios.get(`/api/books/public/${payload}`);
 
       return data;
     } catch (error) {
@@ -63,6 +80,12 @@ export const getBookById = createAsyncThunk(
 export const setCurrentBook = createAsyncThunk('books/set-current-book', async payload => {
   return null;
 });
+export const setCurrentPublicBook = createAsyncThunk(
+  'books/set-current-public-book',
+  async payload => {
+    return null;
+  },
+);
 export const updateBook = createAsyncThunk('books/update', async (payload, { rejectWithValue }) => {
   try {
     const { data } = await axios.put(`/api/books/${payload._id}`, payload);
