@@ -17,7 +17,7 @@ const AddToFav = ({ _id, user }) => {
     user.favDict && setAddToFav(!!user.favDict[_id]);
   }, [user]);
   return (
-    <div className="hover:cursor-pointer absolute top-3 right-3  text-gray-400 ">
+    <div className="hover:cursor-pointer absolute top-3 right-3  text-gray-200 ">
       <FontAwesomeIcon
         onClick={handleFav}
         className={`h-8 w-8 ${addToFav && 'text-red-600'}`}
