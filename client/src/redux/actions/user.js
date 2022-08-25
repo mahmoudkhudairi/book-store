@@ -49,7 +49,9 @@ export const getLoggedInUser = createAsyncThunk(
   'users/get-logged-in-user',
   async (payload, { rejectWithValue }) => {
     try {
-      const { data } = await axios.get('/api/users/user-info');
+      const { data } = await axios.get('/api/users/user-info', {
+        withCredentials: true,
+      });
 
       return data;
     } catch (error) {
@@ -62,7 +64,9 @@ export const getProfile = createAsyncThunk(
   'users/profile',
   async (payload, { rejectWithValue }) => {
     try {
-      const { data } = await axios.get(`/api/users/profile/${payload.replaceAll('-', ' ')}`);
+      const { data } = await axios.get(`/api/users/profile/${payload.replaceAll('-', ' ')}`, {
+        withCredentials: true,
+      });
 
       return data;
     } catch (error) {
@@ -81,6 +85,9 @@ export const updateProfile = createAsyncThunk(
       const { data } = await axios.put(
         `/api/users/profile/${payload.username.replaceAll('-', ' ')}`,
         payload.userInfo,
+        {
+          withCredentials: true,
+        },
       );
       return data;
     } catch (error) {

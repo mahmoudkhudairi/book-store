@@ -4,9 +4,10 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 export const getPublicBooks = createAsyncThunk(
   'books/public',
   async (payload, { rejectWithValue }) => {
-    console.log('PAYLOAD', payload);
     try {
-      const { data } = await axios.get(`/api/books/public?page=${payload}`);
+      const { data } = await axios.get(`/api/books/public?page=${payload}`, {
+        withCredentials: true,
+      });
 
       return data;
     } catch (error) {
@@ -20,9 +21,10 @@ export const getPublicBooks = createAsyncThunk(
 export const getPublicBookById = createAsyncThunk(
   'books/id/public',
   async (payload, { rejectWithValue }) => {
-    console.log('PAYLOAD', payload);
     try {
-      const { data } = await axios.get(`/api/books/public/${payload}`);
+      const { data } = await axios.get(`/api/books/public/${payload}`, {
+        withCredentials: true,
+      });
 
       return data;
     } catch (error) {
@@ -88,7 +90,9 @@ export const setCurrentPublicBook = createAsyncThunk(
 );
 export const updateBook = createAsyncThunk('books/update', async (payload, { rejectWithValue }) => {
   try {
-    const { data } = await axios.put(`/api/books/${payload._id}`, payload);
+    const { data } = await axios.put(`/api/books/${payload._id}`, payload, {
+      withCredentials: true,
+    });
     return data;
   } catch (error) {
     return rejectWithValue({
@@ -99,7 +103,9 @@ export const updateBook = createAsyncThunk('books/update', async (payload, { rej
 });
 export const deleteBook = createAsyncThunk('books/delete', async (payload, { rejectWithValue }) => {
   try {
-    const { data } = await axios.delete(`/api/books/${payload}`);
+    const { data } = await axios.delete(`/api/books/${payload}`, {
+      withCredentials: true,
+    });
     return data;
   } catch (error) {
     return rejectWithValue({
@@ -110,9 +116,15 @@ export const deleteBook = createAsyncThunk('books/delete', async (payload, { rej
 });
 export const addBookToFav = createAsyncThunk('books/fav', async (payload, { rejectWithValue }) => {
   try {
-    const { data } = await axios.put(`/api/users/favorite/${payload._id}`, {
-      addToFav: payload.addToFav,
-    });
+    const { data } = await axios.put(
+      `/api/users/favorite/${payload._id}`,
+      {
+        addToFav: payload.addToFav,
+      },
+      {
+        withCredentials: true,
+      },
+    );
     return data;
   } catch (error) {
     return rejectWithValue({
