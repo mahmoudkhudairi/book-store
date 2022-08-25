@@ -1,18 +1,20 @@
 const Book = require('../models/book');
 const axios = require('axios');
 const ErrorResponse = require('../utils/errorResponse');
+
 const getPublicBooks = async (req, res, next) => {
-  const booksPerPage = 10;
-  const page = req.query.page === '0' ? 0 : Number(req.query.page) + booksPerPage;
-  console.log('WHAT IS THE QUERY', req.query.page, 'WHAT IS THE PAGE', page);
+  const booksPerPage = 20;
+  const [query, page] = getQuery(req.query);
+
   // if (process.env.NODE_ENV === 'production') {
   try {
     const {
       data: { items },
     } = await axios.get(
-      `https://www.googleapis.com/books/v1/volumes?q=programming&printType=books&orderBy=newest&startIndex=${page}&maxResults=${booksPerPage}&key=${process.env.GOOGLE_BOOKS_API_KEY}`,
+      `https://www.googleapis.com/books/v1/volumes?q=${query}&printType=books&orderBy=newest&startIndex=${page}&maxResults=${booksPerPage}&key=${process.env.GOOGLE_BOOKS_API_KEY}`,
     );
     let books = [];
+
     if (items) {
       books = items.reduce((acc, item) => {
         const book = new PublicBook(item);
@@ -20,7 +22,6 @@ const getPublicBooks = async (req, res, next) => {
         return acc;
       }, []);
     }
-
     res.json(books);
   } catch (err) {
     next(new ErrorResponse(err.message));
@@ -147,3 +148,24 @@ class PublicBook {
     this._id = id;
   }
 }
+// Workaround for book api since pagination have a known bug (bring duplicate records )
+const getQuery = query => {
+  const page = Number(query.page);
+  const random = Math.ceil(Math.random() * (20 - 5) + 5);
+  switch (page) {
+  case 0:
+    return ['javascript', page + 1];
+  case 1:
+    return ['python', page + random];
+  case 2:
+    return ['java', page + random];
+  case 3:
+    return ['c++', page + random];
+  case 4:
+    return ['agile', page + random];
+  case 5:
+    return ['coding', page + random];
+  default:
+    return ['programming', page * random];
+  }
+};
