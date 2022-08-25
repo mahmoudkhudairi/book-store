@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { register } from '../redux/actions/user';
 import { useDispatch, useSelector } from 'react-redux';
 function Register() {
@@ -98,6 +98,7 @@ function Register() {
           placeholder="password"
           className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-catalina-blue-500 focus:border-catalina-blue-500 block w-full p-2.5"
           required
+          autoComplete="on"
         />
         {state.error?.errors?.password && (
           <span className="mt-2 text-red-600 dark:text-red-400 block">
@@ -121,6 +122,7 @@ function Register() {
           placeholder="password"
           className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-catalina-blue-500 focus:border-catalina-blue-500 block w-full p-2.5"
           required
+          autoComplete="on"
         />
         {state.error?.errors?.confirmPassword && (
           <span className="mt-2 text-red-600 dark:text-red-400 block">
@@ -134,6 +136,12 @@ function Register() {
       >
         Register
       </button>
+      <span className="block text-center mt-6 mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">
+        Already have an Account?{' '}
+        <Link to="/login" className="text-catalina-blue-500 dark:text-catalina-blue-400">
+          Login Now!
+        </Link>
+      </span>
     </form>
   );
 }

@@ -13,10 +13,11 @@ import Spinner from '../components/Spinner';
 import { useSelector } from 'react-redux';
 import ErrorAlert from './ErrorAlert';
 import AdminDashboard from './AdminDashboard';
+import PublicBookDetails from './PublicBookDetails';
 function Main() {
   const state = useSelector(state => state);
   return (
-    <div className="pb-[70px]">
+    <div className="pb-[110px]">
       {state.user.error && <ErrorAlert error={state.user.error} />}
       {state.books.error && <ErrorAlert error={state.books.error} />}
       {(state.user.loading || state.books.loading) && <Spinner />}
@@ -24,6 +25,7 @@ function Main() {
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/" element={<Home />} />
+        <Route path="/public-books/:id" element={<PublicBookDetails />} />
         <Route path="/profile" element={<ProtectedRoute />}>
           <Route path=":username" element={<Profile />} />
         </Route>

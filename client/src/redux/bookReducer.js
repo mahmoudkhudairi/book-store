@@ -4,16 +4,19 @@ import {
   getBooks,
   getBookById,
   setCurrentBook,
+  setCurrentPublicBook,
   updateBook,
   deleteBook,
   addBookToFav,
   getPublicBooks,
+  getPublicBookById,
 } from './actions/book';
 const bookSlice = createSlice({
   name: 'book',
   initialState: {
     allBooks: [],
     currentBook: null,
+    currentPublicBook: null,
     publicBooks: [],
     error: null,
     loading: false,
@@ -30,6 +33,7 @@ const bookSlice = createSlice({
         deleteBook.pending,
         addBookToFav.pending,
         getPublicBooks.pending,
+        getPublicBookById.pending,
       ),
       (state, { payload }) => ({ ...state, loading: true, error: null }),
     );
@@ -43,11 +47,20 @@ const bookSlice = createSlice({
         addBookToFav.fulfilled,
         getPublicBooks.fulfilled,
         setCurrentBook.fulfilled,
+        setCurrentPublicBook.fulfilled,
+        getPublicBookById.fulfilled,
       ),
       (state, { type, payload }) => {
         switch (type) {
           case 'books/public/fulfilled':
-            return { ...state, loading: false, success: true, publicBooks: payload };
+            return {
+              ...state,
+              loading: false,
+              success: true,
+              publicBooks: [...state.publicBooks, ...payload],
+            };
+          case 'books/id/public/fulfilled':
+            return { ...state, loading: false, success: true, currentPublicBook: payload };
           case 'books/get-all/fulfilled':
             return {
               ...state,
@@ -59,6 +72,8 @@ const bookSlice = createSlice({
             return { ...state, loading: false, success: true, currentBook: payload };
           case 'books/set-current-book/fulfilled':
             return { ...state, loading: false, success: true, currentBook: null };
+          case 'books/set-current-public-book/fulfilled':
+            return { ...state, loading: false, success: true, currentPublicBook: null };
           case 'books/delete/fulfilled':
             return {
               ...state,
@@ -91,6 +106,7 @@ const bookSlice = createSlice({
         deleteBook.rejected,
         addBookToFav.rejected,
         getPublicBooks.rejected,
+        getPublicBookById.rejected,
       ),
       (state, { payload }) => {
         if (payload) {

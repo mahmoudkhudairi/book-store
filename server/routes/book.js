@@ -5,12 +5,14 @@ const router = express.Router();
 const {
   getBooks,
   getPublicBooks,
+  getPublicBookById,
   getBookById,
   createBook,
   updateBook,
   deleteBook,
 } = require('../controllers/book');
 router.route('/public').get(getPublicBooks);
+router.route('/public/:id').get(getPublicBookById);
 router.use(authenticate);
 router.route('/').get(getBooks).post(createBook);
 router

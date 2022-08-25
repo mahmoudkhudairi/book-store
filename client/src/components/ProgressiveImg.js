@@ -13,7 +13,7 @@ const ProgressiveImg = ({ placeholderSrc, src, ...props }) => {
     <img
       {...{ src: imgSrc, ...props }}
       alt={props.alt || ''}
-      className={`p-1 h-60 mx-auto border rounded-lg my-3 ${customClass}`}
+      className={`w-full sm:h-[280px] aspect-square ${customClass}`}
     />
   );
 };

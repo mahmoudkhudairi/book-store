@@ -7,15 +7,24 @@ import { BrowserRouter } from 'react-router-dom';
 import ScrollToTop from './components/ScrollToTop';
 import { Provider } from 'react-redux';
 import store from './redux/store';
+import { Offline, Online } from 'react-detect-offline';
+import ChromeDinoGame from 'react-chrome-dino';
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-  <BrowserRouter>
-    <Provider store={store}>
-      <ScrollToTop>
-        <App />
-      </ScrollToTop>
-    </Provider>
-  </BrowserRouter>,
+  <>
+    <Online>
+      <BrowserRouter>
+        <Provider store={store}>
+          <ScrollToTop>
+            <App />
+          </ScrollToTop>
+        </Provider>
+      </BrowserRouter>
+    </Online>
+    <Offline>
+      <ChromeDinoGame />
+    </Offline>
+  </>,
 );
 
 // If you want to start measuring performance in your app, pass a function
