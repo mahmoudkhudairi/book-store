@@ -21,7 +21,7 @@ const TableBody = () => {
       {state.dashboardData?.books.map(book => (
         <tr key={book._id}>
           <td className="px-2 py-4">
-            <p className="text-sm font-medium text-gray-900 dark:text-white break-words w-40">
+            <p className="text-sm font-medium text-gray-900 dark:text-white break-words w-40 line-clamp-3">
               {book.title}
             </p>
           </td>
@@ -36,7 +36,7 @@ const TableBody = () => {
             <div className="text-sm text-gray-800 dark:text-gray-100">{book.publisher}</div>
           </td>
           <td className="px-2 py-4 ">
-            <p className="text-sm text-gray-800 dark:text-gray-100 break-words w-40">
+            <p className="text-sm text-gray-800 dark:text-gray-100 break-words w-40 line-clamp-3">
               {book.description}
             </p>
           </td>
