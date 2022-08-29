@@ -1,5 +1,59 @@
 const mongoose = require('mongoose');
 const cloudinary = require('../utils/cloudinary');
+/**
+ * @swagger
+ * components:
+ *   schemas:
+ *     Book:
+ *       type: object
+ *       required:
+ *         - title
+ *         - authors
+ *         - publisher
+ *         - publishedDate
+ *         - description
+ *         - imageUrl
+ *       properties:
+ *         _id:
+ *           type: string
+ *           description: The auto-generated id of the book
+ *         title:
+ *           type: string
+ *           description: The book title
+ *         authors:
+ *           type: string
+ *           description: The book authors
+ *         publisher:
+ *           type: string
+ *           description: The book publisher
+ *         publishedDate:
+ *           type: string
+ *           description: The book publishedDate
+ *         description:
+ *           type: string
+ *           description: The book description
+ *         imageUrl:
+ *           type: string
+ *           description: The book image
+ *         favoriteCount:
+ *           type: number
+ *           description: The book favoriteCount
+ *         createdBy:
+ *           type: mongoose.Schema.Types.ObjectId
+ *           description: The user id
+ *         status:
+ *           type: string
+ *           description: The book status
+ *           enum: ['APPROVED', 'DECLINED', 'PENDING']
+ *           default: 'PENDING'
+ *       example:
+ *         title: bookTitle
+ *         authors: [autherName]
+ *         publisher: publisherName
+ *         publishedDate: may, 2010
+ *         description: some text description
+ *         imageUrl: image url
+ */
 const BookSchema = mongoose.Schema(
   {
     title: {
@@ -10,7 +64,7 @@ const BookSchema = mongoose.Schema(
     authors: {
       type: [String],
       required: [true, 'Book Authors are required'],
-      validate: [(value) => value.length > 0, 'At least 1 Author is required'],
+      validate: [value => value.length > 0, 'At least 1 Author is required'],
     },
     publisher: {
       type: String,

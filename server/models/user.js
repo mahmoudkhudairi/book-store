@@ -1,6 +1,53 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
 const cloudinary = require('../utils/cloudinary');
+/**
+ * @swagger
+ * components:
+ *   schemas:
+ *     User:
+ *       type: object
+ *       required:
+ *         - name
+ *         - email
+ *         - password
+ *       properties:
+ *         _id:
+ *           type: string
+ *           description: The auto-generated id of the user
+ *         name:
+ *           type: string
+ *           description: The user name
+ *         email:
+ *           type: string
+ *           description: The user email
+ *         password:
+ *           type: string
+ *           description: The user password
+ *         profilePicture:
+ *           type: string
+ *           description: The user profilePicture
+ *         about:
+ *           type: string
+ *           description: The user info
+ *         favoriteBooks:
+ *           type: list
+ *           description: Array of all favorite Books Id's
+ *         favDict:
+ *           type: dict
+ *           description: object of all favorite Books Id's
+ *         role:
+ *           type: string
+ *           description: The user info
+ *           enum: ['ADMIN', 'USER']
+ *           default: 'USER'
+ *
+ *       example:
+ *         name: John Doe
+ *         email: john@gmail.com
+ *         password: superPassword
+ *         confirmPassword: superPassword
+ */
 const UserSchema = mongoose.Schema(
   {
     name: {
@@ -50,18 +97,18 @@ const UserSchema = mongoose.Schema(
   { timestamps: true },
 );
 
-UserSchema.path('email').validate(async (email) => {
+UserSchema.path('email').validate(async email => {
   const emailCount = await mongoose.models.User.countDocuments({ email });
   return !emailCount;
 }, 'user with that email already in Database.');
-UserSchema.path('name').validate(async (name) => {
+UserSchema.path('name').validate(async name => {
   const nameCount = await mongoose.models.User.countDocuments({ name });
   return !nameCount;
 }, 'name already taken.');
 
 UserSchema.virtual('confirmPassword')
   .get(() => this._confirmPassword)
-  .set((value) => (this._confirmPassword = value));
+  .set(value => (this._confirmPassword = value));
 
 UserSchema.pre('validate', function (next) {
   if (this.password !== this.confirmPassword) {
