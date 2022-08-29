@@ -25,7 +25,7 @@ function Header() {
     navigate('/');
   };
   const activeLinkClass =
-    'px-3 py-2 flex self-center text-xs uppercase font-extrabold md:font-bold leading-snug md:relative md:after:absolute md:after:block md:after:w-[75%] md:after:h-[4px] md:after:left-[50%] md:after:bottom-[-5%] md:after:translate-x-[-50%] md:after:rounded-lg  md:after:content-[""] md:after:bg-white';
+    'px-3 py-2 flex self-center text-xs uppercase font-extrabold md:font-bold leading-snug md:relative md:after:absolute md:after:block md:after:w-[50%] md:after:h-[4px] md:after:left-[50%] md:after:bottom-[-5%] md:after:translate-x-[-50%] md:after:rounded-lg  md:after:content-[""] md:after:bg-white';
   const linkClass =
     'px-3 py-2 flex self-center text-xs uppercase font-bold leading-snug text-catalina-blue-100 hover:opacity-75';
   return (
