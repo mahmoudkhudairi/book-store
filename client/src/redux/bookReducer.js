@@ -7,7 +7,6 @@ import {
   setCurrentPublicBook,
   updateBook,
   deleteBook,
-  addBookToFav,
   getPublicBooks,
   getPublicBookById,
 } from './actions/book';
@@ -31,7 +30,6 @@ const bookSlice = createSlice({
         getBookById.pending,
         updateBook.pending,
         deleteBook.pending,
-        addBookToFav.pending,
         getPublicBooks.pending,
         getPublicBookById.pending,
       ),
@@ -44,7 +42,6 @@ const bookSlice = createSlice({
         getBookById.fulfilled,
         updateBook.fulfilled,
         deleteBook.fulfilled,
-        addBookToFav.fulfilled,
         getPublicBooks.fulfilled,
         setCurrentBook.fulfilled,
         setCurrentPublicBook.fulfilled,
@@ -90,8 +87,6 @@ const bookSlice = createSlice({
               }
             });
             return { ...state, loading: false, success: true, allBooks: newBooks };
-          case 'books/fav/fulfilled':
-            return { ...state, loading: false, success: true };
           default:
             return state;
         }
@@ -104,7 +99,6 @@ const bookSlice = createSlice({
         getBookById.rejected,
         updateBook.rejected,
         deleteBook.rejected,
-        addBookToFav.rejected,
         getPublicBooks.rejected,
         getPublicBookById.rejected,
       ),
