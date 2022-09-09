@@ -31,7 +31,7 @@ function BookDetails() {
       <>
         <div className="dark:bg-slate-700 bg-gray-100 mx-10 sm:w-[50%] sm:mx-auto p-10 rounded-xl dark:text-white relative">
           <h2 className="text-center mb-2">{book.title}</h2>
-          <AddToFav _id={book._id} book={book} user={state.user} isDetails={true} />
+          <AddToFav _id={book._id} book={book} user={state.user.user} isDetails={true} />
           <img src={book.imageUrl} alt="" className="p-1 h-60 mx-auto border rounded-lg my-3" />
           <p>authors: {book.authors && book.authors.join(', ')}</p>
           <p>Publisher: {book.publisher}</p>

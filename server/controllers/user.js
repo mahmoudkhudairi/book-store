@@ -124,7 +124,7 @@ const toggleFavorites = async (req, res, next) => {
         { new: true },
       );
       await Book.findByIdAndUpdate(id, { $inc: { favoriteCount: 1 } }, { new: true });
-      res.json(user);
+      res.json(user.favDict);
     } else {
       const user = await User.findByIdAndUpdate(
         req.user._id,
@@ -133,7 +133,7 @@ const toggleFavorites = async (req, res, next) => {
         { new: true },
       );
       await Book.findByIdAndUpdate(id, { $inc: { favoriteCount: -1 } }, { new: true });
-      res.json(user);
+      res.json(user.favDict);
     }
   } catch (err) {
     next(new ErrorResponse(err.message));

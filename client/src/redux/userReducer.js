@@ -8,7 +8,7 @@ import {
   getProfile,
   updateProfile,
 } from './actions/user';
-
+import { addBookToFav } from './actions/book';
 const userSlice = createSlice({
   name: 'user',
   initialState: { user: null, error: null, loading: false, success: false, profile: null },
@@ -22,6 +22,7 @@ const userSlice = createSlice({
         getLoggedInUser.pending,
         getProfile.pending,
         updateProfile.pending,
+        addBookToFav.pending,
       ),
       (state, { type, payload }) => {
         if (type === 'users/get-logged-in-user/pending') {
@@ -39,11 +40,19 @@ const userSlice = createSlice({
         getLoggedInUser.fulfilled,
         getProfile.fulfilled,
         updateProfile.fulfilled,
+        addBookToFav.fulfilled,
       ),
       (state, { type, payload }) => {
         switch (type) {
           case 'users/profile/fulfilled':
             return { ...state, loading: false, success: true, profile: payload };
+          case 'books/fav/fulfilled':
+            return {
+              ...state,
+              loading: false,
+              success: true,
+              user: { ...state.user, favDict: payload },
+            };
           default:
             return { ...state, loading: false, success: true, user: payload };
         }
@@ -57,6 +66,7 @@ const userSlice = createSlice({
         getLoggedInUser.rejected,
         getProfile.rejected,
         updateProfile.rejected,
+        addBookToFav.rejected,
       ),
       (state, { type, payload }) => {
         if (type === 'users/get-logged-in-user/rejected') {

@@ -14,7 +14,7 @@ const swaggerOptions = {
       {
         url: 'http://localhost:4000',
       },
-      { url: 'https://thebooksplace.herokuapp.com' },
+      { url: 'https://book-store-0j2u.onrender.com' },
     ],
     tags: [
       {
