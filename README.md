@@ -4,7 +4,7 @@
 
 ## Live Site
 
-- [https://thebooksplace.herokuapp.com/](https://thebooksplace.herokuapp.com/)
+- [https://book-store-0j2u.onrender.com/](https://book-store-0j2u.onrender.com/)
 
 ## Stack
 
@@ -33,7 +33,7 @@
 
 ## API Endpoints
 
-- [swagger docs](https://thebooksplace.herokuapp.com/api-docs)
+- [swagger docs](https://book-store-0j2u.onrender.com/api-docs)
 
 ## Folders Structure
 
@@ -98,4 +98,3 @@ Docker
   - this will run 3 docker images (backend-server,frontend,mongodb)
   - once its done you can access the backend server on `localhost:4000`
   - the frontend will be accessible on `localhost:3000`
-
