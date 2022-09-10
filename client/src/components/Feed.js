@@ -42,7 +42,7 @@ const Feed = props => {
           ))}
         </div>
       )}
-      {!state.loading && !state.allBooks && (
+      {!state.loading && !state.allBooks.length > 0 && (
         <Placeholder text="No books added yet :(" buttonText="Add a new Book" link="/books/new" />
       )}
     </>
