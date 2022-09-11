@@ -2,10 +2,12 @@
 
 - Application for users to browse public books from google api or books added by other users.
 
+## Demo
+https://user-images.githubusercontent.com/10994276/189551600-15762134-9f5a-4af2-9dd1-32e5b5890dc7.mp4
 ## Live Site
 
 - [https://book-store-0j2u.onrender.com/](https://book-store-0j2u.onrender.com/)
-
+- [youtube demo](https://youtu.be/X7hHlCTrPMA)
 ## Stack
 
 - React.js
