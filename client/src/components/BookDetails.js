@@ -33,10 +33,19 @@ function BookDetails() {
           <h2 className="text-center mb-2">{book.title}</h2>
           <AddToFav _id={book._id} book={book} user={state.user.user} isDetails={true} />
           <img src={book.imageUrl} alt="" className="p-1 h-60 mx-auto border rounded-lg my-3" />
-          <p>authors: {book.authors && book.authors.join(', ')}</p>
-          <p>Publisher: {book.publisher}</p>
-          <p>PublishedDate: {book.publishedDate}</p>
-          <p className="break-words">Description: {book.description}</p>
+          <p>
+            <span className="font-bold mr-1">authors:</span>
+            {book.authors && book.authors.join(', ')}
+          </p>
+          <p>
+            <span className="font-bold mr-1">Publisher:</span> {book.publisher}
+          </p>
+          <p>
+            <span className="font-bold mr-1">PublishedDate:</span> {book.publishedDate}
+          </p>
+          <p className="break-words">
+            <span className="font-bold mr-1">Description:</span> {book.description}
+          </p>
           {state.user.user._id === book.createdBy._id && (
             <div className="mt-4 flex w-[100%] justify-center gap-4">
               <Link
@@ -46,7 +55,6 @@ function BookDetails() {
               >
                 Edit
               </Link>
-
               <DeleteBook _id={id} isDetails={true} />
             </div>
           )}
