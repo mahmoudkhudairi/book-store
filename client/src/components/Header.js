@@ -113,7 +113,7 @@ function Header() {
                         name={state?.user?.name}
                         round={true}
                         size={35}
-                        src=""
+                        src={state.user.profilePicture}
                         className=" mx-1 text-xs font-bold leading-snug hover:cursor-pointer hover:opacity-75  mt-1 sm:mt-0 text-catalina-blue-100"
                         onClick={() => {
                           navigate(`/profile/${state.user.name?.replace(/\s+/g, '-')}`);

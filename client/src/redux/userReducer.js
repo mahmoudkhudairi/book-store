@@ -27,6 +27,8 @@ const userSlice = createSlice({
       (state, { type, payload }) => {
         if (type === 'users/get-logged-in-user/pending') {
           return { ...state, loading: false, success: false, error: null, user: 'pending' };
+        } else if (type === 'users/profile/pending') {
+          return { ...state, loading: true, error: null, profile: null };
         } else {
           return { ...state, loading: true, error: null };
         }

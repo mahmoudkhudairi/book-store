@@ -91,7 +91,9 @@ const getUserProfile = async (req, res, next) => {
         populate: { path: 'createdBy', select: '_id name email' },
       })
       .select('_id name email profilePicture about favoriteBooks');
-    const books = await Book.find({ createdBy: user._id }).populate('createdBy', '_id name email');
+    const books = await Book.find({ createdBy: user._id, status: 'APPROVED' })
+      .sort({ createdAt: -1, _id: -1 })
+      .populate('createdBy', '_id name email');
     res.json({ ...user.toObject(), books });
   } catch (err) {
     next(new ErrorResponse(err.message));
