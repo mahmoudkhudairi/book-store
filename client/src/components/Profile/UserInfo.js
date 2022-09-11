@@ -39,7 +39,9 @@ const UserInfo = props => {
   return (
     <div className="max-w-[80%] my-16 mx-auto rounded-lg shadow-xl bg-catalina-blue-500 dark:bg-slate-800 p-8 text-center text-white relative">
       <div className="absolute hover:cursor-pointer  top-5 right-5  text-gray-300 ">
-        <FontAwesomeIcon className={`h-4 w-4 `} icon={faPen} onClick={handleClick} />
+        {state.user._id === userInfo._id && (
+          <FontAwesomeIcon className={`h-4 w-4 `} icon={faPen} onClick={handleClick} />
+        )}
       </div>
       {shouldEdit ? (
         <>

@@ -14,6 +14,7 @@ const register = async (req, res, next) => {
       name: newUser.name,
       email: newUser.email,
       role: newUser.role,
+      favDict: newUser.favDict,
     };
     const userToken = jwt.sign(userData, SECRET);
     res
@@ -46,6 +47,7 @@ const login = async (req, res, next) => {
           name: userRecord.name,
           email: userRecord.email,
           role: userRecord.role,
+          favDict: userRecord.favDict,
         };
         const userToken = jwt.sign(userData, SECRET);
         res

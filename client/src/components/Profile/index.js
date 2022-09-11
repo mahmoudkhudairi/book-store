@@ -14,7 +14,7 @@ function Profile() {
   });
   useEffect(() => {
     dispatch(getProfile(username));
-  }, []);
+  }, [username]);
   useEffect(() => {
     setUserInfo(state.profile);
   }, [state.profile]);
