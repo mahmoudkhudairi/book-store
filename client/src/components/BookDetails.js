@@ -37,7 +37,7 @@ function BookDetails() {
           <p>Publisher: {book.publisher}</p>
           <p>PublishedDate: {book.publishedDate}</p>
           <p className="break-words">Description: {book.description}</p>
-          {state.user._id === book.createdBy._id && (
+          {state.user.user._id === book.createdBy._id && (
             <div className="mt-4 flex w-[100%] justify-center gap-4">
               <Link
                 to={`/books/${book._id}/edit`}
